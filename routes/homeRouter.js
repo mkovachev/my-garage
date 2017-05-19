@@ -143,6 +143,7 @@ router.post('/addevent', isLoggedIn, function (req, res) {
 			'owner': user._id
 		});
 		Event.addEvent(newEvent);
+		req.flash('success_msg', 'event successfully added');
 		//vehicle.events.push(newEvent._id); // TODO
 		res.redirect('/maintenance');
 	}
@@ -170,8 +171,6 @@ router.post('/addvehicle', isLoggedIn, function (req, res) {
 
 	const errors = req.validationErrors();
 	if (errors) {
-		req.flash('error_msg', errors);
-		console.log(errors);
 		res.redirect('/addvehicle');
 	} else {
 		const newVehicle = new Vehicle({
@@ -184,7 +183,8 @@ router.post('/addvehicle', isLoggedIn, function (req, res) {
 			'owner': user._id
 		});
 		Vehicle.addVehicle(newVehicle);
-		user.vehicles.push(newVehicle._id); // TODO
+		req.flash('success_msg', 'Vehicle successfully added!');
+		// user.vehicles.push(newVehicle._id); // TODO
 		res.redirect('/mygarage');
 	}
 });
@@ -207,14 +207,10 @@ router.post('/', function (req, res) {
 		"email": email
 	}).then(user => {
 		if (user) {
-			console.log('User exists!');
-			req.flash('error_msg', 'User exists');
 			res.redirect('/');
 		} else {
 			const errors = req.validationErrors();
 			if (errors) {
-				console.log(errors);
-				req.flash('error_msg', errors);
 				res.redirect('/');
 			} else {
 				const newUser = new User({
@@ -223,8 +219,6 @@ router.post('/', function (req, res) {
 					password: password
 				});
 				User.createUser(newUser);
-				req.flash('success_msg', 'You are registered and can now login');
-				console.log("Registered successfully!");
 				res.redirect('/');
 			}
 		}
@@ -243,35 +237,26 @@ router.post('/mygarage', function (req, res) {
 
 	const errors = req.validationErrors();
 	if (errors) {
-		console.log(errors);
-		req.flash('error_msg', errors);
 		res.redirect('/');
 	} else {
 		User.findOne({
 			"username": loginParams.username
 		}, function (err, user) {
 			if (err) {
-				console.log(err);
-				req.flash('error_msg', err);
 				res.redirect('/');
 			}
 			if (!user || user === null) {
-				console.log('user not found');
-				req.flash('error_msg', 'User nor found');
 				res.redirect('/');
 			}
 
 			bcrypt.compare(loginParams.password, user.password, function (err, success) {
 				if (err) {
-					console.log('password is incorrect!');
-					req.flash('error_msg', 'password is incorrect');
 					res.redirect('/');
 				}
 
 				if (success) {
 					req.session.user = user;
 					req.flash('success_msg', 'You are logged in');
-					console.log('logged in successfully!');
 					res.redirect('/mygarage');
 				}
 			});
