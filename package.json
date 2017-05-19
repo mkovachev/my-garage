@@ -1,0 +1,23 @@
+{
+  "name": "mygarage",
+  "version": "1.0.0",
+  "description": "manage your cars fleet",
+  "scripts": {
+    "start": "node server"
+  },
+  "author": "Martin Kovachev",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "*",
+    "body-parser": "*",
+    "connect-flash": "*",
+    "express": "*",
+    "express-handlebars": "*",
+    "express-messages": "*",
+    "express-session": "*",
+    "express-validator": "*",
+    "mongodb": "*",
+    "mongoose": "*"
+  },
+  "devDependencies": {}
+}
