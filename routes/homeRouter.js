@@ -96,7 +96,6 @@ router.get('/mygarage', isLoggedIn, function (req, res, next) {
 			req.flash('error_msg', 'You have no vehicles, add one');
 			console.log('This user has no vehicles, add one first');
 			res.redirect('addvehicle');
-			return;
 		} else {
 			res.render('mygarage', {
 				layout: false,
@@ -134,7 +133,7 @@ router.post('/addevent', isLoggedIn, function (req, res) {
 	if (errors) {
 		console.log(errors);
 		req.flash('error_msg', errors);
-		return;
+		res.redirect('/addevent');
 	} else {
 		const newEvent = new Event({
 			title,
@@ -146,7 +145,6 @@ router.post('/addevent', isLoggedIn, function (req, res) {
 		Event.addEvent(newEvent);
 		//vehicle.events.push(newEvent._id); // TODO
 		res.redirect('/maintenance');
-		return;
 	}
 });
 
@@ -174,7 +172,7 @@ router.post('/addvehicle', isLoggedIn, function (req, res) {
 	if (errors) {
 		req.flash('error_msg', errors);
 		console.log(errors);
-		return;
+		res.redirect('/addvehicle');
 	} else {
 		const newVehicle = new Vehicle({
 			type,
@@ -188,7 +186,6 @@ router.post('/addvehicle', isLoggedIn, function (req, res) {
 		Vehicle.addVehicle(newVehicle);
 		user.vehicles.push(newVehicle._id); // TODO
 		res.redirect('/mygarage');
-		return;
 	}
 });
 
@@ -212,13 +209,13 @@ router.post('/', function (req, res) {
 		if (user) {
 			console.log('User exists!');
 			req.flash('error_msg', 'User exists');
-			return;
+			res.redirect('/');
 		} else {
 			const errors = req.validationErrors();
 			if (errors) {
 				console.log(errors);
 				req.flash('error_msg', errors);
-				return;
+				res.redirect('/');
 			} else {
 				const newUser = new User({
 					email: email,
@@ -229,7 +226,6 @@ router.post('/', function (req, res) {
 				req.flash('success_msg', 'You are registered and can now login');
 				console.log("Registered successfully!");
 				res.redirect('/');
-				return;
 			}
 		}
 	});
@@ -243,13 +239,13 @@ router.post('/mygarage', function (req, res) {
 	const password = req.body.password;
 
 	req.checkBody('username', 'username is required').notEmpty();
-	req.checkBody('password', 'model is required').notEmpty();
+	req.checkBody('password', 'password is required').notEmpty();
 
 	const errors = req.validationErrors();
 	if (errors) {
 		console.log(errors);
 		req.flash('error_msg', errors);
-		return;
+		res.redirect('/');
 	} else {
 		User.findOne({
 			"username": loginParams.username
@@ -257,13 +253,12 @@ router.post('/mygarage', function (req, res) {
 			if (err) {
 				console.log(err);
 				req.flash('error_msg', err);
-				return;
+				res.redirect('/');
 			}
 			if (!user || user === null) {
 				console.log('user not found');
 				req.flash('error_msg', 'User nor found');
 				res.redirect('/');
-				return;
 			}
 
 			bcrypt.compare(loginParams.password, user.password, function (err, success) {
@@ -271,7 +266,6 @@ router.post('/mygarage', function (req, res) {
 					console.log('password is incorrect!');
 					req.flash('error_msg', 'password is incorrect');
 					res.redirect('/');
-					return;
 				}
 
 				if (success) {
@@ -279,7 +273,6 @@ router.post('/mygarage', function (req, res) {
 					req.flash('success_msg', 'You are logged in');
 					console.log('logged in successfully!');
 					res.redirect('/mygarage');
-					return;
 				}
 			});
 		});
