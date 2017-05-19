@@ -10,10 +10,6 @@
 </head>
 
 <body>
-  {{#if errors}} {{#each errors}}
-  <div>{{msg}}</div>
-  {{/each}} {{/if}}
-
   <div class="container">
     <div class="header clearfix">
       <nav>
@@ -35,6 +31,11 @@
       </nav>
       <h3 class="text-muted"><a href="/mygarage">My Garage</a></h3>
     </div>
+
+    <!-- Show errors-->
+    {{#if errors}} {{#each errors}}
+    <div class="alert alert-danger">{{msg}}</div>
+    {{/each}} {{/if}}
 
     <!-- Register-->
     <h2 class="page-header">Register</h2>

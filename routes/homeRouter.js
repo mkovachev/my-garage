@@ -34,11 +34,10 @@ router.get('/logout', isLoggedOut, function (req, res) {
 	res.render('home');
 });
 
-// helpers
+//------------------------- Guards --------------------
 function isLoggedIn(req, res, next) {
 	if (req.session.user === null) {
-		req.flash('error_msg', 'Please log in!');
-		console.log('Please log in!');
+		req.flash('error_msg', 'You are not logged in, login now'); // TODO
 		res.redirect('/');
 	} else {
 		next();
@@ -47,7 +46,6 @@ function isLoggedIn(req, res, next) {
 
 function isLoggedOut(req, res, next) {
 	if (req.session.user !== null) {
-		req.flash('success_msg', 'You are logged out!');
 		req.session.destroy(function (err) {
 			res.redirect('/');
 			res.end("Logout success");
@@ -66,8 +64,9 @@ router.get('/maintenance', isLoggedIn, function (req, res, next) {
 		"owner": id
 	}, function (err, events) {
 		if (err) {
-			console.log(err);
-			req.flash('error_msg', err);
+			res.render('maintenance', {
+				errors: err
+			});
 		} else {
 			res.render('maintenance', {
 				layout: false,
@@ -90,11 +89,11 @@ router.get('/mygarage', isLoggedIn, function (req, res, next) {
 		"owner": id
 	}, function (err, vehicles) {
 		if (err) {
-			console.log(err);
-			req.flash('error_msg', err);
+			res.render('mygarage', {
+				errors: err
+			});
 		} else if (vehicles.length === 0) {
-			req.flash('error_msg', 'You have no vehicles, add one');
-			console.log('This user has no vehicles, add one first');
+			req.flash('error_msg', 'You have no vehicles, add one now'); // TODO
 			res.redirect('addvehicle');
 		} else {
 			res.render('mygarage', {
@@ -110,7 +109,6 @@ router.get('/mygarage', isLoggedIn, function (req, res, next) {
 		}
 	})
 });
-
 
 //--------------------POST requests --------------
 // add event
@@ -131,9 +129,9 @@ router.post('/addevent', isLoggedIn, function (req, res) {
 
 	const errors = req.validationErrors();
 	if (errors) {
-		console.log(errors);
-		req.flash('error_msg', errors);
-		res.redirect('/addevent');
+		res.render('addevent', {
+			errors: errors
+		});
 	} else {
 		const newEvent = new Event({
 			title,
@@ -143,7 +141,7 @@ router.post('/addevent', isLoggedIn, function (req, res) {
 			'owner': user._id
 		});
 		Event.addEvent(newEvent);
-		req.flash('success_msg', 'event successfully added');
+		req.flash('success_msg', 'Event successfully added!');
 		//vehicle.events.push(newEvent._id); // TODO
 		res.redirect('/maintenance');
 	}
@@ -171,7 +169,9 @@ router.post('/addvehicle', isLoggedIn, function (req, res) {
 
 	const errors = req.validationErrors();
 	if (errors) {
-		res.redirect('/addvehicle');
+		res.render('addvehicle', {
+			errors: errors
+		});
 	} else {
 		const newVehicle = new Vehicle({
 			type,
@@ -202,6 +202,8 @@ router.post('/', function (req, res) {
 	req.checkBody('password', 'Password is required').notEmpty();
 	req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
 
+	const errors = req.validationErrors();
+
 	User.findOne({
 		"username": username,
 		"email": email
@@ -209,16 +211,20 @@ router.post('/', function (req, res) {
 		if (user) {
 			res.redirect('/');
 		} else {
-			const errors = req.validationErrors();
 			if (errors) {
-				res.redirect('/');
+				res.render('home', {
+					errors: errors
+				});
 			} else {
 				const newUser = new User({
 					email: email,
 					username: username,
 					password: password
 				});
-				User.createUser(newUser);
+				User.createUser(newUser, function (err, user) {
+					if (err) throw err;
+					console.log(user);
+				});
 				res.redirect('/');
 			}
 		}
@@ -236,8 +242,11 @@ router.post('/mygarage', function (req, res) {
 	req.checkBody('password', 'password is required').notEmpty();
 
 	const errors = req.validationErrors();
+
 	if (errors) {
-		res.redirect('/');
+		res.render('home', {
+			errors: errors
+		});
 	} else {
 		User.findOne({
 			"username": loginParams.username
@@ -246,7 +255,9 @@ router.post('/mygarage', function (req, res) {
 				res.redirect('/');
 			}
 			if (!user || user === null) {
-				res.redirect('/');
+				res.render('home', {
+					errors: "User not found"
+				});
 			}
 
 			bcrypt.compare(loginParams.password, user.password, function (err, success) {
