@@ -46,9 +46,9 @@ function isLoggedIn(req, res, next) {
 };
 
 function isLoggedOut(req, res, next) {
-	if (req.session.user != null) {
+	if (req.session.user !== null) {
+		req.flash('success_msg', 'You are logged out!');
 		req.session.destroy(function (err) {
-			req.flash('success_msg', 'You are logged out!');
 			res.redirect('/');
 			res.end("Logout success");
 			return;
@@ -61,7 +61,10 @@ function isLoggedOut(req, res, next) {
 //------------------------- VIEWs ---------------
 // maintenance - all events
 router.get('/maintenance', isLoggedIn, function (req, res, next) {
-	Event.find({}, function (err, events) {
+	const id = req.session.user._id;
+	Event.find({
+		"owner": id
+	}, function (err, events) {
 		if (err) {
 			console.log(err);
 			req.flash('error_msg', err);
@@ -119,6 +122,8 @@ router.post('/addevent', isLoggedIn, function (req, res) {
 	const license = req.body.license;
 	const cost = req.body.cost;
 
+	const user = req.session.user;
+
 	// input validation
 	req.checkBody('title', 'title is required').notEmpty();
 	req.checkBody('description', 'description is required').notEmpty();
@@ -135,7 +140,8 @@ router.post('/addevent', isLoggedIn, function (req, res) {
 			title,
 			description,
 			license,
-			cost
+			cost,
+			'owner': user._id
 		});
 		Event.addEvent(newEvent);
 		//vehicle.events.push(newEvent._id); // TODO

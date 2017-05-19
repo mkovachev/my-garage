@@ -18,6 +18,12 @@ const EventSchema = mongoose.Schema({
     },
     cost: {
         type: String,
+    },
+    owner: {
+        type: Schema.ObjectId,
+        ref: 'User',
+        lowercase: true,
+        trim: true
     }
 });
 
