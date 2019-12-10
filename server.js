@@ -21,7 +21,7 @@ mongoose.createConnection(
   },
   err => {
     if (err) console.error(err);
-    else console.log('Connected to the mongodb');
+    else console.log('Connected to mongodb');
   }
 );
 
