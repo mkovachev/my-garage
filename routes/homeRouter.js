@@ -14,13 +14,6 @@ homeRouter.get('/', (req, res) => {
 	res.render('home');
 });
 
-//add vehicle
-// homeRouter.get('/addvehicle', isLoggedIn, (req, res) => {
-// 	res.render('addvehicle', {
-// 		layout: false
-// 	});
-// });
-
 // add event
 homeRouter.get('/addevent', loginValidator.isLoggedIn, (req, res) => res.render('addevent', {
 	layout: false
