@@ -52,7 +52,7 @@ app.use(
 app.use(
   session({
     secret: 'secret',
-    saveUninitialized: true, // don't create session until something stored
+    saveUninitialized: true, // create session when sth is stored
     resave: false, // don't save session if unmodified
     cookie: {
       maxAge: 3600000 // one hour expiration
