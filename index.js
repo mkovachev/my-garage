@@ -10,7 +10,7 @@ const logger = require('./middleware/logger.js');
 const mongoose = require('mongoose');
 mongoose.set('useCreateIndex', true);
 mongoose.Promise = global.Promise;
-mongoose.createConnection(
+mongoose.connect(
   'mongodb://localhost/mygarage',
   {
     useUnifiedTopology: true,
