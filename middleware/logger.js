@@ -6,4 +6,4 @@ const logger = (req, res, next) => {
     next();
 };
 
-module.export = logger;
+module.exports = logger;
