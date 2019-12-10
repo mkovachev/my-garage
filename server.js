@@ -6,12 +6,9 @@ const exphbs = require('express-handlebars');
 const session = require('express-session');
 const flash = require('connect-flash');
 
-// set mongoDB
-const mongo = require('mongodb');
 const mongoose = require('mongoose');
 mongoose.set('useCreateIndex', true);
 mongoose.Promise = global.Promise;
-const db = mongoose.connection;
 mongoose.createConnection(
   'mongodb://localhost/mygarage',
   {
