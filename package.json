@@ -15,9 +15,17 @@
     "express-handlebars": "*",
     "express-messages": "*",
     "express-session": "*",
+<<<<<<< HEAD
     "express-validator": "^5.3.1",
+=======
+    "express-validator": "*",
+>>>>>>> bc3979e4adcb63e98f6cba282648a38ff2b2a3b8
     "mongodb": "*",
     "mongoose": "*"
   },
   "devDependencies": {}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> bc3979e4adcb63e98f6cba282648a38ff2b2a3b8

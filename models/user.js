@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
+<<<<<<< HEAD
 mongoose.set('useCreateIndex', true);
+=======
+>>>>>>> bc3979e4adcb63e98f6cba282648a38ff2b2a3b8
 const Schema = mongoose.Schema;
 const bcrypt = require('bcryptjs');
 
