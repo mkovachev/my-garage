@@ -12,9 +12,13 @@ const mongoose = require('mongoose');
 mongoose.set('useCreateIndex', true);
 mongoose.Promise = global.Promise;
 const db = mongoose.connection;
-mongoose.connect(
+mongoose.createConnection(
   'mongodb://localhost/mygarage',
-  { useNewUrlParser: true },
+  {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+    useCreateIndex: true
+  },
   err => {
     if (err) console.error(err);
     else console.log('Connected to the mongodb');
