@@ -9,9 +9,17 @@ const flash = require('connect-flash');
 // set mongoDB
 const mongo = require('mongodb');
 const mongoose = require('mongoose');
+mongoose.set('useCreateIndex', true);
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/mygarage');
 const db = mongoose.connection;
+mongoose.connect(
+  'mongodb://localhost/mygarage',
+  { useNewUrlParser: true },
+  err => {
+    if (err) console.error(err);
+    else console.log('Connected to the mongodb');
+  }
+);
 
 // Init App
 const app = express();
@@ -21,45 +29,54 @@ app.use(express.static('public'));
 
 // set view engine
 app.set('views', path.join(__dirname, 'views'));
-app.engine('handlebars', exphbs({
-  layoutsDir: 'views',
-  defaultLayout: 'home'
-}));
+app.engine(
+  'handlebars',
+  exphbs({
+    layoutsDir: 'views',
+    defaultLayout: 'home'
+  })
+);
 app.set('view engine', 'handlebars');
 app.enable('view cache');
 
 // bodyParser
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-  extended: false
-}));
+app.use(
+  bodyParser.urlencoded({
+    extended: false
+  })
+);
 
 // Express Session
-app.use(session({
-  secret: 'secret',
-  saveUninitialized: true, // don't create session until something stored
-  resave: false, // don't save session if unmodified
-  cookie: {
-    maxAge: 3600000 // one hour expiration
-  }
-}));
-
-app.use(expressValidator({
-  errorFormatter: function (param, msg, value) {
-    const namespace = param.split('.'),
-      root = namespace.shift(),
-      formParam = root;
-
-    while (namespace.length) {
-      formParam += '[' + namespace.shift() + ']';
+app.use(
+  session({
+    secret: 'secret',
+    saveUninitialized: true, // don't create session until something stored
+    resave: false, // don't save session if unmodified
+    cookie: {
+      maxAge: 3600000 // one hour expiration
     }
-    return {
-      param: formParam,
-      msg: msg,
-      value: value
-    };
-  }
-}));
+  })
+);
+
+app.use(
+  expressValidator({
+    errorFormatter: function (param, msg, value) {
+      const namespace = param.split('.'),
+        root = namespace.shift(),
+        formParam = root;
+
+      while (namespace.length) {
+        formParam += '[' + namespace.shift() + ']';
+      }
+      return {
+        param: formParam,
+        msg: msg,
+        value: value
+      };
+    }
+  })
+);
 
 app.use(flash());
 app.use(function (req, res, next) {
@@ -74,7 +91,7 @@ const home = require('./routes/homeRouter');
 app.use('/', home);
 
 // Set Port
-app.set('port', (process.env.PORT || 3000));
+app.set('port', process.env.PORT || 3000);
 
 app.listen(app.get('port'), function () {
   console.log('Server started on port ' + app.get('port'));
