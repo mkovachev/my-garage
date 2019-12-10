@@ -25,7 +25,7 @@ mongoose.createConnection(
   }
 );
 
-// Init Appa
+// Init App
 const app = express();
 
 // set static folders
