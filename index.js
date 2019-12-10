@@ -5,6 +5,7 @@ const expressValidator = require('express-validator');
 const exphbs = require('express-handlebars');
 const session = require('express-session');
 const flash = require('connect-flash');
+const moment = require('moment');
 
 const mongoose = require('mongoose');
 mongoose.set('useCreateIndex', true);
@@ -25,7 +26,8 @@ mongoose.createConnection(
 // init App
 const app = express();
 
-// set static folder
+// init middleware
+app.use(logger);
 app.use(express.static('public'));
 
 // set view engine
@@ -48,7 +50,7 @@ app.use(
   })
 );
 
-// Express Session
+// session
 app.use(
   session({
     secret: 'secret',
