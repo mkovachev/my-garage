@@ -90,8 +90,13 @@ app.use(function (req, res, next) {
 });
 
 // routes
-const home = require('./routes/homeRouter');
-app.use('/', home);
+const homeRouter = require('./routes/homeRouter');
+const vehicleRouter = require('./routes/vehicleRouter');
+const loginValidator = require('./middleware/loginValidator');
+app.use('/', homeRouter);
+app.use('/', vehicleRouter);
+app.use(loginValidator.isLoggedIn);
+app.use(loginValidator.isLoggedOut);
 
 // Set Port
 app.set('port', process.env.PORT || 3000);

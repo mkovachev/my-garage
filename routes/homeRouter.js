@@ -1,6 +1,7 @@
 const express = require('express');
-const router = express.Router();
+const homeRouter = express.Router();
 const bcrypt = require('bcryptjs');
+const loginValidator = require('../middleware/loginValidator');
 
 const User = require('../models/user');
 const Vehicle = require('../models/vehicle');
@@ -9,52 +10,31 @@ const Event = require('../models/event');
 // --------------- Routes ---------------------
 
 // home
-router.get('/', (req, res) => {
+homeRouter.get('/', (req, res) => {
 	res.render('home');
 });
 
-// add vehicle
-router.get('/addvehicle', isLoggedIn, (req, res) => {
-	res.render('addvehicle', {
-		layout: false
-	});
-});
+//add vehicle
+// homeRouter.get('/addvehicle', isLoggedIn, (req, res) => {
+// 	res.render('addvehicle', {
+// 		layout: false
+// 	});
+// });
 
 // add event
-router.get('/addevent', isLoggedIn, (req, res) => res.render('addevent', {
+homeRouter.get('/addevent', loginValidator.isLoggedIn, (req, res) => res.render('addevent', {
 	layout: false
 }));
 
 // logout
-router.get('/logout', isLoggedOut, (req, res) => {
+homeRouter.get('/logout', loginValidator.isLoggedOut, (req, res) => {
 	res.render('home');
 });
 
-//------------------------- Guards --------------------
-function isLoggedIn(req, res, next) {
-	if (req.session.user === null) {
-		req.flash('error_msg', 'You are not logged in, login now'); // TODO
-		res.redirect('/');
-	} else {
-		next();
-	}
-};
-
-function isLoggedOut(req, res, next) {
-	if (req.session.user !== null) {
-		req.session.destroy(function () {
-			res.redirect('/');
-			res.end("Logout success");
-			return;
-		});
-	} else {
-		next();
-	}
-};
 
 //------------------------- VIEWs ---------------
 // maintenance - all events
-router.get('/maintenance', isLoggedIn, function (req, res) {
+homeRouter.get('/maintenance', loginValidator.isLoggedIn, function (req, res) {
 	const id = req.session.user._id;
 	Event.find({
 		"owner": id
@@ -79,7 +59,7 @@ router.get('/maintenance', isLoggedIn, function (req, res) {
 });
 
 // mygarage - all vehicles per user view
-router.get('/mygarage', isLoggedIn, function (req, res) {
+homeRouter.get('/mygarage', loginValidator.isLoggedIn, function (req, res) {
 	const id = req.session.user._id;
 	Vehicle.find({
 		"owner": id
@@ -108,7 +88,7 @@ router.get('/mygarage', isLoggedIn, function (req, res) {
 
 //--------------------POST requests --------------
 // add event
-router.post('/addevent', isLoggedIn, function (req, res) {
+homeRouter.post('/addevent', loginValidator.isLoggedIn, function (req, res) {
 	const title = req.body.title;
 	const description = req.body.description;
 	const license = req.body.license;
@@ -143,7 +123,7 @@ router.post('/addevent', isLoggedIn, function (req, res) {
 });
 
 // add vehicle
-router.post('/addvehicle', isLoggedIn, function (req, res) {
+homeRouter.post('/addvehicle', loginValidator.isLoggedIn, function (req, res) {
 	const type = req.body.type;
 	const brand = req.body.brand;
 	const model = req.body.model;
@@ -184,7 +164,7 @@ router.post('/addvehicle', isLoggedIn, function (req, res) {
 });
 
 // register
-router.post('/', function (req, res) {
+homeRouter.post('/', function (req, res) {
 	const username = req.body.username;
 	const email = req.body.email;
 	const password = req.body.password;
@@ -226,7 +206,7 @@ router.post('/', function (req, res) {
 });
 
 // Login
-router.post('/mygarage', function (req, res) {
+homeRouter.post('/mygarage', function (req, res) {
 	const loginParams = req.body;
 
 	req.checkBody('username', 'username is required').notEmpty();
@@ -266,4 +246,4 @@ router.post('/mygarage', function (req, res) {
 	}
 });
 
-module.exports = router;
+module.exports = homeRouter;
