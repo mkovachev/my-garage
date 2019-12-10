@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-const mongoose = require('mongoose');
 
 const User = require('../models/user');
 const Vehicle = require('../models/vehicle');
