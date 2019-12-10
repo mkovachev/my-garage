@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "manage your cars fleet",
   "scripts": {
-    "start": "node server"
+    "start": "node server",
+    "dev": "nodemon server"
   },
-  "author": "Martin Kovachev",
+  "author": "Martin",
   "license": "MIT",
   "dependencies": {
     "bcryptjs": "*",

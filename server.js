@@ -25,7 +25,7 @@ mongoose.createConnection(
 // Init App
 const app = express();
 
-// set static folders
+// set static folder
 app.use(express.static('public'));
 
 // set view engine
