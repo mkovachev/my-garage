@@ -5,7 +5,7 @@ const expressValidator = require('express-validator');
 const exphbs = require('express-handlebars');
 const session = require('express-session');
 const flash = require('connect-flash');
-const moment = require('moment');
+const logger = require('./middleware/logger');
 
 const mongoose = require('mongoose');
 mongoose.set('useCreateIndex', true);
