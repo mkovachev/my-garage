@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Garage</title>
+    <link rel="stylesheet" href="/css/bootstrap.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+</head>
+
+<body>
+    {{#if errors}} {{#each errors}}
+    <div>{{msg}}</div>
+    {{/each}} {{/if}}
+
+    <div class="container">
+        <div class="header clearfix">
+            <nav>
+                <ul class="nav nav-pills pull-right">
+                    <li role="presentation"><a href="/mygarage">My Cars</a></li>
+                    <li role="presentation"><a href="/maintenance">Maintenance</a></li>
+                    <li role="presentation"><a href="/addvehicle">Add Vehicle</a></li>
+                    <li role="presentation"><a href="/addevent">Add Event</a></li>
+                    <li role="presentation"><a href="/logout">Logout</a></li>
+                </ul>
+            </nav>
+            <h3 class="text-muted"><a href="/mygarage">My Garage</a></h3>
+        </div>
+
+        <!-- Show errors-->
+        {{#if errors}} {{#each errors}}
+        <div class="alert alert-danger">{{msg}}</div>
+        {{/each}} {{/if}}
+
+        <!-- add vehicle -->
+        <form method="post" action="/addvehicle">
+            <div class="form-group">
+                <label>Car Type</label>
+                <input type="text" class="form-control" placeholder="Car Type" name="type">
+            </div>
+            <div class="form-group">
+                <label>Brand</label>
+                <input type="text" class="form-control" placeholder="Brand" name="brand">
+            </div>
+            <div class="form-group">
+                <label>Model</label>
+                <input type="text" class="form-control" placeholder="Model" name="model">
+            </div>
+            <div class="form-group">
+                <label>License</label>
+                <input type="text" class="form-control" placeholder="License" name="license">
+            </div>
+            <div class="form-group">
+                <label>Year</label>
+                <input type="text" class="form-control" placeholder="Year" name="year">
+            </div>
+            <div class="form-group">
+                <label>Km</label>
+                <input type="text " class="form-control" placeholder="Km" name="km">
+            </div>
+            <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+
+    </div>
+
+</body>
+
+</html>
