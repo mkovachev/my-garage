@@ -27,7 +27,7 @@ mongoose.createConnection(
 const app = express();
 
 // init middleware
-app.use(logger);
+//app.use(logger);
 app.use(express.static('public'));
 
 // set view engine
