@@ -10,13 +10,14 @@
   "license": "MIT",
   "dependencies": {
     "bcryptjs": "*",
-    "body-parser": "*",
+    "body-parser": "^1.19.0",
     "connect-flash": "*",
+    "cors": "^2.8.5",
     "express": "*",
     "express-handlebars": "*",
     "express-messages": "*",
-    "express-session": "*",
-    "express-validator": "*",
+    "express-session": "^1.17.0",
+    "express-validator": "^5.3.1",
     "moment": "^2.24.0",
     "mongodb": "*",
     "mongoose": "*"

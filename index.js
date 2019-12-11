@@ -5,7 +5,6 @@ const expressValidator = require('express-validator');
 const exphbs = require('express-handlebars');
 const session = require('express-session');
 const flash = require('connect-flash');
-const logger = require('./middleware/logger.js');
 
 const mongoose = require('mongoose');
 mongoose.set('useCreateIndex', true);
@@ -27,7 +26,6 @@ mongoose.connect(
 const app = express();
 
 // init middleware
-//app.use(logger);
 app.use(express.static('public'));
 
 // set view engine
@@ -44,20 +42,16 @@ app.enable('view cache');
 
 // bodyParser
 app.use(bodyParser.json());
-app.use(
-  bodyParser.urlencoded({
-    extended: false
-  })
-);
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // session
 app.use(
   session({
     secret: 'secret',
-    saveUninitialized: true, // create session when sth is stored
-    resave: false, // don't save session if unmodified
+    saveUninitialized: true,
+    resave: false,
     cookie: {
-      maxAge: 3600000 // one hour expiration
+      maxAge: 24 * 60 * 60 * 1000 // 24 hours
     }
   })
 );
@@ -96,12 +90,16 @@ const logoutRouter = require('./routes/logoutRouter');
 const loginRouter = require('./routes/loginRouter');
 const registerRouter = require('./routes/registerRouter');
 const eventRouter = require('./routes/eventRouter');
+const maintenanceRouter = require('./routes/maintenanceRouter');
+const mygarageRouter = require('./routes/mygarageRouter');
 const loginValidator = require('./middleware/loginValidator');
 app.use('/', homeRouter);
 app.use('/', registerRouter);
 app.use('/mygarage', loginRouter);
 app.use('/logout', logoutRouter);
 app.use('/addvehicle', vehicleRouter);
+app.use('/maintenance', maintenanceRouter);
+app.use('/mygarage', mygarageRouter);
 app.use('/addevent', eventRouter);
 app.use(loginValidator.isLoggedIn);
 app.use(loginValidator.isLoggedOut);
