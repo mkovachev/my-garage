@@ -4,7 +4,7 @@ const loginRouter = express.Router();
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 
-loginRouter.post('/mygarage', function (req, res) {
+loginRouter.post('/', (req, res) => {
     const loginParams = req.body;
 
     req.checkBody('username', 'username is required').notEmpty();
@@ -19,7 +19,7 @@ loginRouter.post('/mygarage', function (req, res) {
     } else {
         User.findOne({
             "username": loginParams.username
-        }, function (err, user) {
+        }, (err, user) => {
             if (err) {
                 res.redirect('/');
             }

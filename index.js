@@ -94,17 +94,20 @@ const homeRouter = require('./routes/homeRouter');
 const vehicleRouter = require('./routes/vehicleRouter');
 const logoutRouter = require('./routes/logoutRouter');
 const loginRouter = require('./routes/loginRouter');
+const registerRouter = require('./routes/registerRouter');
+const eventRouter = require('./routes/eventRouter');
 const loginValidator = require('./middleware/loginValidator');
 app.use('/', homeRouter);
-app.use('/', vehicleRouter);
-app.use('/', logoutRouter);
-app.use('/', loginRouter);
+app.use('/', registerRouter);
+app.use('/mygarage', loginRouter);
+app.use('/logout', logoutRouter);
+app.use('/addvehicle', vehicleRouter);
+app.use('/addevent', eventRouter);
 app.use(loginValidator.isLoggedIn);
 app.use(loginValidator.isLoggedOut);
 
-// Set Port
-app.set('port', process.env.PORT || 3000);
 
+app.set('port', process.env.PORT || 3000);
 app.listen(app.get('port'), function () {
   console.log('Server started on port ' + app.get('port'));
 });
