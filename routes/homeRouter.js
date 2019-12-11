@@ -19,11 +19,6 @@ homeRouter.get('/addevent', loginValidator.isLoggedIn, (req, res) => res.render(
 	layout: false
 }));
 
-// logout
-homeRouter.get('/logout', loginValidator.isLoggedOut, (req, res) => {
-	res.render('home');
-});
-
 
 //------------------------- VIEWs ---------------
 // maintenance - all events

@@ -92,9 +92,11 @@ app.use(function (req, res, next) {
 // routes
 const homeRouter = require('./routes/homeRouter');
 const vehicleRouter = require('./routes/vehicleRouter');
+const logoutRouter = require('./routes/logoutRouter');
 const loginValidator = require('./middleware/loginValidator');
 app.use('/', homeRouter);
 app.use('/', vehicleRouter);
+app.use('/logout', logoutRouter);
 app.use(loginValidator.isLoggedIn);
 app.use(loginValidator.isLoggedOut);
 
