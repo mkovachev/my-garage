@@ -51,12 +51,12 @@ vehicleRouter.post('/', loginValidator.isLoggedIn, async (req, res) => {
 });
 
 // update vehicle
-vehicleRouter.patch('/:id', loginValidator.isLoggedIn, (req, res) => {
+vehicleRouter.patch('/:id', loginValidator.isLoggedIn, async (req, res) => {
 
 })
 
 // delete vehicle
-vehicleRouter.delete('/:id', loginValidator.isLoggedIn, (req, res) => {
+vehicleRouter.delete('/:id', loginValidator.isLoggedIn, async (req, res) => {
 
 })
 
