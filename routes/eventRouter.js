@@ -3,11 +3,12 @@ const eventRouter = express.Router();
 const loginValidator = require('../middleware/loginValidator');
 const Event = require('../models/event');
 
-eventRouter.get('/addevent', loginValidator.isLoggedIn, (req, res) => res.render('addevent', {
+eventRouter.get('/', loginValidator.isLoggedIn, (req, res) => res.render('addevent', {
     layout: false
 }));
 
-eventRouter.post('/addevent', loginValidator.isLoggedIn, function (req, res) {
+// add ivent
+eventRouter.post('/', loginValidator.isLoggedIn, (req, res) => {
     const title = req.body.title;
     const description = req.body.description;
     const license = req.body.license;

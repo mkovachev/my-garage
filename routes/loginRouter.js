@@ -1,4 +1,3 @@
-
 const express = require('express');
 const loginRouter = express.Router();
 const bcrypt = require('bcryptjs');
@@ -29,7 +28,7 @@ loginRouter.post('/', (req, res) => {
                 });
             }
 
-            bcrypt.compare(loginParams.password, user.password, function (err, success) {
+            bcrypt.compare(loginParams.password, user.password, (err, success) => {
                 if (err) {
                     res.redirect('/');
                 }

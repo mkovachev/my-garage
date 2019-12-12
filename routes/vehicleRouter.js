@@ -3,14 +3,14 @@ const vehicleRouter = express.Router();
 const loginValidator = require('../middleware/loginValidator');
 const Vehicle = require('../models/vehicle');
 
-vehicleRouter.get('/addvehicle', loginValidator.isLoggedIn, (req, res) => {
+vehicleRouter.get('/', loginValidator.isLoggedIn, async (req, res) => {
     res.render('addvehicle', {
         layout: false
     });
 });
 
-// post
-vehicleRouter.post('/addvehicle', loginValidator.isLoggedIn, function (req, res) {
+// create vehicle
+vehicleRouter.post('/', loginValidator.isLoggedIn, async (req, res) => {
     const type = req.body.type;
     const brand = req.body.brand;
     const model = req.body.model;
@@ -49,5 +49,15 @@ vehicleRouter.post('/addvehicle', loginValidator.isLoggedIn, function (req, res)
         res.redirect('/mygarage');
     }
 });
+
+// update vehicle
+vehicleRouter.patch('/:id', loginValidator.isLoggedIn, (req, res) => {
+
+})
+
+// delete vehicle
+vehicleRouter.delete('/:id', loginValidator.isLoggedIn, (req, res) => {
+
+})
 
 module.exports = vehicleRouter;

@@ -1,3 +1,4 @@
+
 const isLoggedIn = (req, res, next) => {
     if (req.session.user === null) {
         req.flash('error_msg', 'You are not logged in, login now'); // TODO
@@ -9,7 +10,7 @@ const isLoggedIn = (req, res, next) => {
 
 const isLoggedOut = (req, res, next) => {
     if (req.session.user !== null) {
-        req.session.destroy(function () {
+        req.session.destroy(() => {
             res.redirect('/');
             res.end("Logout success");
             return;

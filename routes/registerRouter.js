@@ -3,7 +3,7 @@ const registerRouter = express.Router();
 const User = require('../models/user');
 
 
-registerRouter.post('/', function (req, res) {
+registerRouter.post('/', (req, res) => {
     const username = req.body.username;
     const email = req.body.email;
     const password = req.body.password;
@@ -33,7 +33,7 @@ registerRouter.post('/', function (req, res) {
                     username: username,
                     password: password
                 });
-                User.createUser(newUser, function (err, user) {
+                User.createUser(newUser, (err, user) => {
                     if (err) throw err;
                     console.log(user);
                 });

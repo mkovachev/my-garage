@@ -1,10 +1,7 @@
 const mongoose = require('mongoose');
-mongoose.set('useCreateIndex', true);
 const Schema = mongoose.Schema;
-const bcrypt = require('bcryptjs');
 
-// Vehicle Schema
-const VehicleSchema = mongoose.Schema({
+const vehicleSchema = mongoose.Schema({
   type: {
     type: String
   },
@@ -38,7 +35,7 @@ const VehicleSchema = mongoose.Schema({
   }
 });
 
-const Vehicle = (module.exports = mongoose.model('Vehicle', VehicleSchema));
+const Vehicle = (module.exports = mongoose.model('Vehicle', vehicleSchema));
 
 module.exports.addVehicle = function(newVehicle, callback) {
   newVehicle.save(callback);
