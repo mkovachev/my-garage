@@ -1,6 +1,6 @@
 const express = require('express');
 const registerRouter = express.Router();
-const User = require('../models/user');
+const Users = require('../models/user');
 
 
 registerRouter.post('/', (req, res) => {
@@ -16,7 +16,7 @@ registerRouter.post('/', (req, res) => {
 
     const errors = req.validationErrors();
 
-    User.findOne({
+    Users.findOne({
         "username": username,
         "email": email
     }).then(user => {
@@ -33,7 +33,7 @@ registerRouter.post('/', (req, res) => {
                     username: username,
                     password: password
                 });
-                User.createUser(newUser, (err, user) => {
+                Users.createUser(newUser, (err, user) => {
                     if (err) throw err;
                     console.log(user);
                 });

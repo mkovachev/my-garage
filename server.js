@@ -24,6 +24,18 @@ mongoose.connect(
 // init express
 const app = express();
 
+// session
+app.use(
+  session({
+    secret: 'secret token',
+    saveUninitialized: true,
+    resave: false,
+    cookie: {
+      maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    }
+  })
+);
+
 // init middleware
 app.use(express.static('public'));
 
@@ -35,17 +47,6 @@ app.set('view engine', 'handlebars');
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// session
-app.use(
-  session({
-    secret: 'secret',
-    saveUninitialized: false,
-    resave: false,
-    cookie: {
-      maxAge: 24 * 60 * 60 * 1000 // 24 hours
-    }
-  })
-);
 
 app.use(
   expressValidator({
