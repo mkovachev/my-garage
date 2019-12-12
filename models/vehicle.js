@@ -35,24 +35,24 @@ const vehicleSchema = mongoose.Schema({
   }
 });
 
-const Vehicle = (module.exports = mongoose.model('Vehicle', vehicleSchema));
+const Vehicles = (module.exports = mongoose.model('Vehicles', vehicleSchema));
 
 module.exports.addVehicle = function(newVehicle, callback) {
   newVehicle.save(callback);
 };
 
 module.exports.getVehicleById = function(id, callback) {
-  Vehicle.findById(id, callback);
+  Vehicles.findById(id, callback);
 };
 
 module.exports.getFleet = function(username, callback) {
-  Vehicle.find(username, callback);
+  Vehicles.find(username, callback);
 };
 
 module.exports.editVehicle = function(id, callback) {
-  Vehicle.findOneAndUpdate(id, callback);
+  Vehicles.findOneAndUpdate(id, callback);
 };
 
 module.exports.deleteVehicle = function(id, callback) {
-  Vehicle.findByIdAndRemove(id, callback);
+  Vehicles.findByIdAndRemove(id, callback);
 };

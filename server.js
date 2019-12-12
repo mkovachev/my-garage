@@ -10,7 +10,7 @@ const flash = require('connect-flash');
 
 // set mongodb
 mongoose.connect(
-  process.env.DB_URL,
+  process.env.DATABASE_URL,
   {
     useUnifiedTopology: true,
     useNewUrlParser: true
