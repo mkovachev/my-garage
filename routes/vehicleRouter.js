@@ -3,6 +3,7 @@ const vehicleRouter = express.Router();
 const loginValidator = require('../middleware/loginValidator');
 const Vehicle = require('../models/vehicle');
 
+// render addvehicle view
 vehicleRouter.get('/', loginValidator.isLoggedIn, async (req, res) => {
     res.render('addvehicle', {
         layout: false
