@@ -20,7 +20,7 @@ const UserSchema = new mongoose.Schema({
 	vehicles: [{
 		vehicle: {
 			type: String,
-			ref: 'Vehicle'
+			ref: 'Vehicles'
 		}
 	}]
 })
@@ -28,11 +28,10 @@ const UserSchema = new mongoose.Schema({
 module.exports = mongoose.model('Users', UserSchema)
 
 
-module.exports.createUser = (newUser, callback)
-	=> bcrypt.genSalt(10, (err, salt)
-		=> bcrypt.hash(newUser.password, salt, (err, hash)
-			=> {
-	newUser.password = hash;
-	newUser.save(callback);
-	return;
-}))
+module.exports.createUser = (newUser, callback) => bcrypt.genSalt(10, function (err, salt) {
+	bcrypt.hash(newUser.password, salt, (err, hash) => {
+		newUser.password = hash;
+		newUser.save(callback);
+		return;
+	});
+})

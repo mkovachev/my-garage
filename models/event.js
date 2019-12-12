@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema
 
 const EventSchema = new mongoose.Schema({
   title: {
@@ -19,26 +20,10 @@ const EventSchema = new mongoose.Schema({
   },
   owner: {
     type: Schema.ObjectId,
-    ref: 'User',
+    ref: 'Users',
     lowercase: true,
     trim: true
   }
-});
+})
 
-const Event = (module.exports = mongoose.model('Event', EventSchema));
-
-module.exports.addEvent = function (newEvent, callback) {
-  newEvent.save(callback);
-};
-
-module.exports.getEventById = function (id, callback) {
-  Event.findById(id, callback);
-};
-
-module.exports.editEvent = function (id, callback) {
-  Event.findOneAndUpdate(id, callback);
-};
-
-module.exports.deleteEvent = function (id, callback) {
-  Event.findByIdAndRemove(id, callback);
-};
+module.exports = mongoose.model('Events', EventSchema)

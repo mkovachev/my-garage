@@ -1,7 +1,8 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose')
+mongoose.set('useCreateIndex', true)
+const Schema = mongoose.Schema
 
-const vehicleSchema = mongoose.Schema({
+const vehicleSchema = new mongoose.Schema({
   type: {
     type: String
   },
@@ -25,7 +26,7 @@ const vehicleSchema = mongoose.Schema({
   },
   owner: {
     type: Schema.ObjectId,
-    ref: 'User',
+    ref: 'Users',
     unique: true,
     lowercase: true,
     trim: true
@@ -33,26 +34,6 @@ const vehicleSchema = mongoose.Schema({
   events: {
     type: String
   }
-});
+})
 
-const Vehicles = (module.exports = mongoose.model('Vehicles', vehicleSchema));
-
-module.exports.addVehicle = function(newVehicle, callback) {
-  newVehicle.save(callback);
-};
-
-module.exports.getVehicleById = function(id, callback) {
-  Vehicles.findById(id, callback);
-};
-
-module.exports.getFleet = function(username, callback) {
-  Vehicles.find(username, callback);
-};
-
-module.exports.editVehicle = function(id, callback) {
-  Vehicles.findOneAndUpdate(id, callback);
-};
-
-module.exports.deleteVehicle = function(id, callback) {
-  Vehicles.findByIdAndRemove(id, callback);
-};
+module.exports = mongoose.model('Vehicles', vehicleSchema)
