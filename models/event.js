@@ -1,9 +1,6 @@
 const mongoose = require('mongoose');
-mongoose.set('useCreateIndex', true);
-const Schema = mongoose.Schema;
 
-// User Schema
-const EventSchema = mongoose.Schema({
+const EventSchema = new mongoose.Schema({
   title: {
     type: String,
     require: true
