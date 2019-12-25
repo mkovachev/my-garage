@@ -5,10 +5,8 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}\\index"
+            "skipFiles": ["<node_internals>/**"],
+            "program": "${workspaceFolder}\\server.js"
         }
     ]
 }

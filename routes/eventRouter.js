@@ -1,16 +1,16 @@
 const express = require('express')
-const eventRouter = express.Router()
+const router = express.Router()
 const loginValidator = require('../middleware/loginValidator')
 const Event = require('../models/event')
 
-eventRouter.get('/', loginValidator.isLoggedIn, (req, res) =>
+router.get('/', loginValidator.isLoggedIn, (req, res) =>
   res.render('addevent', {
     layout: false
   })
 )
 
 // add ivent
-eventRouter.post('/', loginValidator.isLoggedIn, (req, res) => {
+router.post('/', loginValidator.isLoggedIn, (req, res) => {
   const title = req.body.title
   const description = req.body.description
   const license = req.body.license
@@ -44,4 +44,4 @@ eventRouter.post('/', loginValidator.isLoggedIn, (req, res) => {
   }
 })
 
-module.exports = eventRouter
+module.exports = router

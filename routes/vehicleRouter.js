@@ -1,17 +1,17 @@
 const express = require('express');
-const vehicleRouter = express.Router();
+const router = express.Router();
 const loginValidator = require('../middleware/loginValidator');
 const Vehicle = require('../models/vehicle');
 
 // render addvehicle view
-vehicleRouter.get('/', loginValidator.isLoggedIn, async (req, res) => {
+router.get('/', loginValidator.isLoggedIn, async (req, res) => {
     res.render('addvehicle', {
         layout: false
     });
 });
 
 // create vehicle
-vehicleRouter.post('/', loginValidator.isLoggedIn, async (req, res) => {
+router.post('/', loginValidator.isLoggedIn, async (req, res) => {
     const type = req.body.type;
     const brand = req.body.brand;
     const model = req.body.model;
@@ -52,13 +52,13 @@ vehicleRouter.post('/', loginValidator.isLoggedIn, async (req, res) => {
 });
 
 // update vehicle
-vehicleRouter.patch('/:id', loginValidator.isLoggedIn, async (req, res) => {
+router.patch('/:id', loginValidator.isLoggedIn, async (req, res) => {
 
 })
 
 // delete vehicle
-vehicleRouter.delete('/:id', loginValidator.isLoggedIn, async (req, res) => {
+router.delete('/:id', loginValidator.isLoggedIn, async (req, res) => {
 
 })
 
-module.exports = vehicleRouter;
+module.exports = router;

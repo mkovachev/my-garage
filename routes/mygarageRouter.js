@@ -1,11 +1,10 @@
 const express = require('express');
-const mygarageRouter = express.Router();
+const router = express.Router();
 const loginValidator = require('../middleware/loginValidator');
-const Vehicles = require('../models/vehicle');
 const Users = require('../models/user');
 
 // get all vehicles per user
-mygarageRouter.get('/', loginValidator.isLoggedIn, async (req, res) => {
+router.get('/', loginValidator.isLoggedIn, async (req, res) => {
     try {
         const user = await Users.findById(req.session.user._id)
         res.json(user.vehicles)
@@ -14,7 +13,7 @@ mygarageRouter.get('/', loginValidator.isLoggedIn, async (req, res) => {
     }
 })
 
-module.exports = mygarageRouter;
+module.exports = router;
 
 
    // Vehicles.find({

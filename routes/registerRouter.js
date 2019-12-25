@@ -1,9 +1,10 @@
 const express = require('express');
-const registerRouter = express.Router();
+const router = express.Router();
 const Users = require('../models/user');
 
 
-registerRouter.post('/', (req, res) => {
+router.post('/', (req, res) => {
+    //console.log(req.body)
     const username = req.body.username;
     const email = req.body.email;
     const password = req.body.password;
@@ -44,4 +45,4 @@ registerRouter.post('/', (req, res) => {
     return;
 });
 
-module.exports = registerRouter;
+module.exports = router;

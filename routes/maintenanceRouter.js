@@ -1,9 +1,9 @@
 const express = require('express');
-const maintenanceRouter = express.Router();
+const router = express.Router();
 const loginValidator = require('../middleware/loginValidator');
 
 
-maintenanceRouter.get('/', loginValidator.isLoggedIn, (req, res) => {
+router.get('/', loginValidator.isLoggedIn, (req, res) => {
     const id = req.session.user._id;
     Event.find({
         "owner": id
@@ -25,4 +25,4 @@ maintenanceRouter.get('/', loginValidator.isLoggedIn, (req, res) => {
     })
 });
 
-module.exports = maintenanceRouter;
+module.exports = router;

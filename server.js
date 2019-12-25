@@ -26,6 +26,7 @@ mongoose.createConnection(
 // init Appa
 const app = express()
 
+
 // set static folders
 app.use(express.static('public'))
 
@@ -63,7 +64,7 @@ app.use(
 
 app.use(
   expressValidator({
-    errorFormatter: function(param, msg, value) {
+    errorFormatter: function (param, msg, value) {
       const namespace = param.split('.'),
         root = namespace.shift(),
         formParam = root
@@ -80,27 +81,29 @@ app.use(
   })
 )
 
-app.use(flash())
-app.use(function(req, res, next) {
-  res.locals.success_msg = req.flash('success_msg')
-  res.locals.error_msg = req.flash('error_msg')
-  res.locals.user = req.user || null
-  next()
-})
 
 // routes
 app.use('/', require('./routes/homeRouter'))
 app.use('/', require('./routes/registerRouter'))
-app.use('/', require('./routes/loginRouter'))
+app.use('/mygarage', require('./routes/loginRouter'))
 app.use('/', require('./routes/logoutRouter'))
 app.use('/addevent', require('./routes/eventRouter'))
 app.use('/mygarage', require('./routes/mygarageRouter'))
 app.use('/maintenance', require('./routes/maintenanceRouter'))
 app.use('/addvehicle', require('./routes/vehicleRouter'))
 
+app.use(flash())
+app.use(function (req, res, next) {
+  res.locals.success_msg = req.flash('success_msg')
+  res.locals.error_msg = req.flash('error_msg')
+  res.locals.user = req.user || null
+  next()
+})
+
+
 // Set Port
 app.set('port', process.env.PORT || 3000)
 
-app.listen(app.get('port'), function() {
+app.listen(app.get('port'), function () {
   console.log('Server started on port ' + app.get('port'))
 })

@@ -1,9 +1,9 @@
 const express = require('express')
-const loginRouter = express.Router()
+const router = express.Router()
 const bcrypt = require('bcryptjs')
 const Users = require('../models/user')
 
-loginRouter.post('/', async (req, res) => {
+router.post('/', async (req, res) => {
     const loginParams = req.body;
 
     req.checkBody('username', 'username is required').notEmpty();
@@ -42,4 +42,4 @@ loginRouter.post('/', async (req, res) => {
     }
 });
 
-module.exports = loginRouter;
+module.exports = router;
