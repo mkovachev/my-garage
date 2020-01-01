@@ -1,55 +1,38 @@
-const express = require('express');
-const path = require('path');
-const bodyParser = require('body-parser');
-const expressValidator = require('express-validator');
-const exphbs = require('express-handlebars');
-const session = require('express-session');
-const flash = require('connect-flash');
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').load()
+}
 
-// set mongoDB
-const mongo = require('mongodb');
-const mongoose = require('mongoose');
-mongoose.set('useCreateIndex', true);
-mongoose.Promise = global.Promise;
-const db = mongoose.connection;
-mongoose.createConnection(
-  'mongodb://localhost/mygarage',
-  {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-    useCreateIndex: true
-  },
-  err => {
-    if (err) console.error(err);
-    else console.log('Connected to the mongodb');
-  }
-);
+const express = require('express')
+const path = require('path')
+const bodyParser = require('body-parser')
+const expressValidator = require('express-validator')
+const exphbs = require('express-handlebars')
+const session = require('express-session')
+const flash = require('connect-flash')
 
-// Init Appa
+const authGuard = require('../middleware/authGuard')
+
 const app = express();
 
-// set static folders
-app.use(express.static('public'));
+const events = require('./routes/events')
+const home = require('./routes/home')
+const maintenance = require('./routes/maintenance')
+const users = require('./routes/users')
+const vehicles = require('./routes/vehicles')
 
 // set view engine
-app.set('views', path.join(__dirname, 'views'));
-app.engine(
-  'handlebars',
-  exphbs({
-    layoutsDir: 'views',
-    defaultLayout: 'home'
-  })
-);
+app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
-app.enable('view cache');
+app.use(methodOverride('_method'))
+app.use(express.static('public'))
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: false }))
 
-// bodyParser
-app.use(bodyParser.json());
-app.use(
-  bodyParser.urlencoded({
-    extended: false
-  })
-);
+// set mongoDB
+const mongoose = require('mongoose')
+mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
+const db = mongoose.connection
+db.on('error', error => console.error(error))
+db.once('open', () => console.log('Connected to Mongoose'))
 
 // Express Session
 app.use(
@@ -90,9 +73,12 @@ app.use(function (req, res, next) {
   next();
 });
 
-// routes
-const home = require('./routes/homeRouter');
-app.use('/', home);
+app.use(authGuard)
+app.use('/', home)
+app.use('/users', users)
+app.use('/events', events)
+app.use('/maintenance', maintenance)
+app.use('/vehicles', vehicles)
 
 // Set Port
 app.set('port', process.env.PORT || 3000);

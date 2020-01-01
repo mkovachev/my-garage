@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 mongoose.set('useCreateIndex', true);
 const Schema = mongoose.Schema;
-const bcrypt = require('bcryptjs');
 
 // Vehicle Schema
 const VehicleSchema = mongoose.Schema({
@@ -40,22 +39,22 @@ const VehicleSchema = mongoose.Schema({
 
 const Vehicle = (module.exports = mongoose.model('Vehicle', VehicleSchema));
 
-module.exports.addVehicle = function(newVehicle, callback) {
+module.exports.addVehicle = function (newVehicle, callback) {
   newVehicle.save(callback);
 };
 
-module.exports.getVehicleById = function(id, callback) {
+module.exports.getVehicleById = function (id, callback) {
   Vehicle.findById(id, callback);
 };
 
-module.exports.getFleet = function(username, callback) {
+module.exports.getFleet = function (username, callback) {
   Vehicle.find(username, callback);
 };
 
-module.exports.editVehicle = function(id, callback) {
+module.exports.editVehicle = function (id, callback) {
   Vehicle.findOneAndUpdate(id, callback);
 };
 
-module.exports.deleteVehicle = function(id, callback) {
+module.exports.deleteVehicle = function (id, callback) {
   Vehicle.findByIdAndRemove(id, callback);
 };
