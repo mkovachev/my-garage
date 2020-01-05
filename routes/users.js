@@ -3,6 +3,8 @@ const router = express.Router()
 const User = require('../models/user')
 const Vehicle = require('../models/vehicle')
 const bcrypt = require('bcryptjs')
+const authGuard = require('../middleware/authGuard')
+const passport = require('passport')
 
 
 // register user
@@ -26,6 +28,14 @@ router.post('/', async (req, res) => {
         res.render('home')
     }
 })
+
+router.post('/mygarage',
+    authGuard.checkNotAuthenticated,
+    passport.authenticate('local', {
+        successRedirect: '/mygarage',
+        failureRedirect: '/',
+        failureFlash: true
+    }))
 
 
 // logout
