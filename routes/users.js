@@ -6,33 +6,26 @@ const Vehicle = require('../models/vehicle')
 
 // register user
 router.post('/', async (req, res) => {
-    const user = new User({
-        email: req.body.email
-    })
+    const existingUser = User.findOne({ email: req.body.email })
+    if (existingUser) {
+        req.flash('info', 'User with this email already exists!')
+        res.render('/')
+    }
     try {
-        const existingUser = User.findOne({ email: req.body.email })
-        if (existingUser) {
-            res.render('/', {
-                user: user,
-                errorMessage: 'Error creating user'
-            })
-        } else {
-            const hashedPassword = await bcrypt.hash(req.body.password, 10)
-            const newUser = {
-                email: req.body.email,
-                password: hashedPassword
-            }
-            await User.save(newUser)
-            res.redirect('/')
+        const hashedPassword = await bcrypt.hash(req.body.password, 10)
+        const newUser = {
+            email: req.body.email,
+            password: hashedPassword
         }
+        await User.save(newUser)
+        res.redirect('/')
     } catch {
-        res.render('/', {
-            user: user,
-            errorMessage: 'Error creating user'
-        })
+        req.flash('info', 'Registration failed! Try again!')
+        res.render('/')
     }
 })
 
+// display user profile
 router.get('/:id', async (req, res) => {
     try {
         const user = await User.findById(req.params.id)
@@ -46,6 +39,7 @@ router.get('/:id', async (req, res) => {
     }
 })
 
+// display edit
 router.get('/:id/edit', async (req, res) => {
     try {
         const user = await User.findById(req.params.id)
@@ -55,6 +49,7 @@ router.get('/:id/edit', async (req, res) => {
     }
 })
 
+// edit
 router.put('/:id', async (req, res) => {
     let user
     try {
