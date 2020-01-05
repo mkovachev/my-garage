@@ -29,6 +29,7 @@ router.post('/', async (req, res) => {
     }
 })
 
+//login
 router.post('/mygarage',
     authGuard.checkNotAuthenticated,
     passport.authenticate('local', {
@@ -38,24 +39,25 @@ router.post('/mygarage',
     }))
 
 
+// mygarage - all vehicles per user view
+router.get('/mygarage', authGuard.checkAuthenticated, async (req, res) => {
+    try {
+        const user = await User.findOne({ user: req.session.user })
+        const vehicles = await Vehicle.find({ user: user.id }).limit(12).exec()
+        res.render('mygarage', {
+            user: user,
+            userVehicles: vehicles
+        })
+    } catch (error) {
+        console.log(error)
+        res.redirect('/')
+    }
+})
+
 // logout
 router.get('/logout', async function (req, res) {
     req.logout()
     res.render('home')
-})
-
-// display user profile
-router.get('/:id', async (req, res) => {
-    try {
-        const user = await User.findById(req.params.id)
-        const books = await Vehicle.find({ user: user.id }).limit(6).exec()
-        res.render('users/show', {
-            user: user,
-            vehiclesByUser: books
-        })
-    } catch {
-        res.redirect('/')
-    }
 })
 
 // display edit
