@@ -7,7 +7,7 @@ const authGuard = require('../middleware/authGuard')
 
 // home
 router.get('/', function (req, res) {
-	res.render('home', { layout: false })
+	res.render('home') //  , { layout: false }
 })
 
 
