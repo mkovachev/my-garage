@@ -34,7 +34,7 @@ app.use(express.static('public'))
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: false })) // req.body
 
 app.use(session({
-  path: '/mygarage',
+  //path: '/',
   cookie: { maxAge: 60000 },
   secret: process.env.SESSION_SECRET,
   resave: false, // don't save if no changes
