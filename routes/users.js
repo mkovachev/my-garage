@@ -7,13 +7,26 @@ const Vehicle = require('../models/vehicle')
 // register user
 router.post('/', async (req, res) => {
     const user = new User({
-        name: req.body.name
+        email: req.body.email
     })
     try {
-        const newUser = await user.save()
-        res.redirect(`users/${newUser.id}`)
+        const existingUser = User.findOne({ email: req.body.email })
+        if (existingUser) {
+            res.render('/', {
+                user: user,
+                errorMessage: 'Error creating user'
+            })
+        } else {
+            const hashedPassword = await bcrypt.hash(req.body.password, 10)
+            const newUser = {
+                email: req.body.email,
+                password: hashedPassword
+            }
+            await User.save(newUser)
+            res.redirect('/')
+        }
     } catch {
-        res.render('users/new', {
+        res.render('/', {
             user: user,
             errorMessage: 'Error creating user'
         })
