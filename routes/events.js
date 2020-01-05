@@ -7,14 +7,14 @@ const Vehicle = require('../models/vehicle')
 const authGuard = require('../middleware/authGuard')
 
 // display event
-router.get('/addevent', authGuard.isLoggedIn, function (req, res) {
+router.get('/addevent', authGuard.checkAuthenticated, function (req, res) {
     res.render('addevent', {
         layout: false
     });
 });
 
 // add event
-router.post('/addevent', authGuard.isLoggedIn, function (req, res) {
+router.post('/addevent', authGuard.checkAuthenticated, function (req, res) {
     const inputParams = req.body;
     const title = req.body.title;
     const description = req.body.description;

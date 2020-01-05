@@ -29,7 +29,7 @@ router.get('/new', async (req, res) => {
 })
 
 // // add vehicle
-// router.get('/addvehicle', authGuard.isLoggedIn, function (req, res) {
+// router.get('/addvehicle', authGuard.checkAuthenticated, function (req, res) {
 // 	res.render('addvehicle', {
 // 		layout: false
 // 	})
@@ -55,7 +55,7 @@ router.post('/', async (req, res) => {
 })
 
 // add vehicle
-// router.post('/addvehicle', authGurad.isLoggedIn, function (req, res) {
+// router.post('/addvehicle', authGurad.checkAuthenticated, function (req, res) {
 // 	const inputParams = req.body;
 // 	const type = req.body.type;
 // 	const brand = req.body.brand;

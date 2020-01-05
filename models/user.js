@@ -1,11 +1,10 @@
 const mongoose = require('mongoose');
 mongoose.set('useCreateIndex', true);
-const Schema = mongoose.Schema;
 const bcrypt = require('bcryptjs');
 
 // User Schema
 const UserSchema = mongoose.Schema({
-	username: {
+	email: {
 		type: String,
 		require: true,
 		unique: true
@@ -13,11 +12,6 @@ const UserSchema = mongoose.Schema({
 	password: {
 		type: String,
 		require: true,
-	},
-	email: {
-		type: String,
-		require: true,
-		unique: true
 	},
 	vehicles: [{
 		vehicle: {

@@ -2,31 +2,9 @@ const express = require('express')
 const router = express.Router()
 const User = require('../models/user')
 const Vehicle = require('../models/vehicle')
-const authGuard = require('../middleware/authGuard')
 
-// All users
-router.get('/', async (req, res) => {
-    let searchOptions = {}
-    if (req.query.name != null && req.query.name !== '') {
-        searchOptions.name = new RegExp(req.query.name, 'i')
-    }
-    try {
-        const users = await User.find(searchOptions)
-        res.render('users/index', {
-            users: users,
-            searchOptions: req.query
-        })
-    } catch {
-        res.redirect('/')
-    }
-})
 
-// New user
-router.get('/new', (req, res) => {
-    res.render('users/new', { user: new User() })
-})
-
-// Create user
+// register user
 router.post('/', async (req, res) => {
     const user = new User({
         name: req.body.name
@@ -82,6 +60,11 @@ router.put('/:id', async (req, res) => {
         }
     }
 })
+
+// logout
+router.get('/logout', async function (req, res) {
+    res.render('home');
+});
 
 router.delete('/:id', async (req, res) => {
     let user

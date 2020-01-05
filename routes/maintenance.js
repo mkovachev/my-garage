@@ -7,7 +7,7 @@ const Vehicle = require('../models/vehicle')
 const authGuard = require('../middleware/authGuard')
 
 // maintenance - all events
-router.get('/maintenance', authGuard.isLoggedIn, function (req, res, next) {
+router.get('/maintenance', authGuard.checkAuthenticated, function (req, res, next) {
     const id = req.session.user._id;
     Event.find({
         "owner": id

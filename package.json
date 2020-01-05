@@ -6,19 +6,19 @@
     "start": "node server.js",
     "devStart": "nodemon server.js"
   },
-  "author": "Martin Kovachev",
+  "author": "MK",
   "license": "MIT",
   "dependencies": {
-    "bcryptjs": "*",
+    "bcryptjs": "^2.4.3",
     "body-parser": "*",
-    "connect-flash": "*",
     "express": "*",
+    "express-flash": "*",
     "express-handlebars": "*",
-    "express-messages": "*",
     "express-session": "*",
-    "express-validator": "*",
-    "mongodb": "*",
-    "mongoose": "*"
+    "method-override": "*",
+    "mongoose": "*",
+    "passport": "*",
+    "passport-local": "*"
   },
   "devDependencies": {
     "dotenv": "*",

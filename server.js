@@ -1,18 +1,23 @@
 if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').load()
+  require('dotenv').config()
 }
 
 const express = require('express')
-const path = require('path')
 const bodyParser = require('body-parser')
-const expressValidator = require('express-validator')
 const exphbs = require('express-handlebars')
 const session = require('express-session')
 const flash = require('connect-flash')
-
-const authGuard = require('../middleware/authGuard')
+const methodOverride = require('method-override')
 
 const app = express();
+
+const passport = require('passport')
+const initializePassport = require('./middleware/passport-config')
+initializePassport(
+  passport,
+  email => users.find(user => user.email === email),
+  id => users.find(user => user.id === id)
+)
 
 const events = require('./routes/events')
 const home = require('./routes/home')
@@ -23,9 +28,25 @@ const vehicles = require('./routes/vehicles')
 // set view engine
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
-app.use(methodOverride('_method'))
+
+// app.engine('.hbs', exphbs({extname: '.hbs'}));
+// app.set('view engine', '.hbs');
+
 app.use(express.static('public'))
-app.use(bodyParser.urlencoded({ limit: '10mb', extended: false }))
+
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: false })) // req.body
+
+app.use(flash())
+
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false, // don't save if no changes
+  saveUninitialized: false // don't save empty value in the session
+}))
+
+app.use(passport.initialize())
+app.use(passport.session())
+app.use(methodOverride('_method'))
 
 // set mongoDB
 const mongoose = require('mongoose')
@@ -34,53 +55,12 @@ const db = mongoose.connection
 db.on('error', error => console.error(error))
 db.once('open', () => console.log('Connected to Mongoose'))
 
-// Express Session
-app.use(
-  session({
-    secret: 'secret',
-    saveUninitialized: true, // don't create session until something stored
-    resave: false, // don't save session if unmodified
-    cookie: {
-      maxAge: 3600000 // one hour expiration
-    }
-  })
-);
-
-app.use(
-  expressValidator({
-    errorFormatter: function (param, msg, value) {
-      const namespace = param.split('.'),
-        root = namespace.shift(),
-        formParam = root;
-
-      while (namespace.length) {
-        formParam += '[' + namespace.shift() + ']';
-      }
-      return {
-        param: formParam,
-        msg: msg,
-        value: value
-      };
-    }
-  })
-);
-
-app.use(flash());
-app.use(function (req, res, next) {
-  res.locals.success_msg = req.flash('success_msg');
-  res.locals.error_msg = req.flash('error_msg');
-  res.locals.user = req.user || null;
-  next();
-});
-
-app.use(authGuard)
 app.use('/', home)
 app.use('/users', users)
 app.use('/events', events)
 app.use('/maintenance', maintenance)
 app.use('/vehicles', vehicles)
 
-// Set Port
 app.set('port', process.env.PORT || 3000);
 
 app.listen(app.get('port'), function () {
