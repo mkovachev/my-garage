@@ -25,7 +25,6 @@ const maintenance = require('./routes/maintenance')
 const users = require('./routes/users')
 const vehicles = require('./routes/vehicles')
 
-
 // set view engine
 app.engine('.hbs', exphbs({ extname: '.hbs' }));
 app.set('view engine', '.hbs');
@@ -34,9 +33,8 @@ app.use(express.static('public'))
 
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: false })) // req.body
 
-app.use(flash())
-
 app.use(session({
+  path: '/mygarage',
   cookie: { maxAge: 60000 },
   secret: process.env.SESSION_SECRET,
   resave: false, // don't save if no changes
@@ -46,6 +44,7 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(methodOverride('_method'))
+app.use(flash())
 
 // set mongoDB
 const mongoose = require('mongoose')
