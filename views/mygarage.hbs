@@ -1,71 +1,37 @@
-<!DOCTYPE html>
-<html>
+<div class="row">
+    <div class="col-lg-12">
+        {{#if success_msg}}
+        <div class="alert alert-success">{{success_msg}}</div>
+        {{/if}} {{#if error_msg}}
+        <div class="alert alert-danger">{{error_msg}}</div>
+        {{/if}} {{#if error}}
+        <div class="alert alert-danger">{{error}}</div>
+        {{/if}} {{{body}}}
+    </div>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>My Garage</title>
-    <link rel="stylesheet" href="/css/bootstrap.css" />
-    <link rel="stylesheet" href="/css/style.css" />
-</head>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Brand</th>
+                <th>Model</th>
+                <th>License</th>
+                <th>Year</th>
+                <th>Km</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each vehicles}}
+            <tr class="info">
+                <td class="info">{{type}}</td>
+                <td class="info">{{brand}}</td>
+                <td class="info">{{model}}</td>
+                <td class="info">{{license}}</td>
+                <td class="info">{{year}}</td>
+                <td class="info">{{km}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
 
-<body>
-    <div class="container">
-        <div class="header clearfix">
-            <nav>
-                <ul class="nav nav-pills pull-right">
-                    <li role="presentation"><a href="/mygarage">My Cars</a></li>
-                    <li role="presentation"><a href="/maintenance">Maintenance</a></li>
-                    <li role="presentation"><a href="/addvehicle">Add Vehicle</a></li>
-                    <li role="presentation"><a href="/addevent">Add Event</a></li>
-                    <li role="presentation"><a href="/logout">Logout</a></li>
-                </ul>
-            </nav>
-            <h3 class="text-muted"><a href="/">My Garage</a></h3>
-        </div>
-
-        <div class="row">
-            <div class="col-lg-12">
-                {{#if success_msg}}
-                <div class="alert alert-success">{{success_msg}}</div>
-                {{/if}} {{#if error_msg}}
-                <div class="alert alert-danger">{{error_msg}}</div>
-                {{/if}} {{#if error}}
-                <div class="alert alert-danger">{{error}}</div>
-                {{/if}} {{{body}}}
-            </div>
-
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Type</th>
-                        <th>Brand</th>
-                        <th>Model</th>
-                        <th>License</th>
-                        <th>Year</th>
-                        <th>Km</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{#each vehicles}}
-                    <tr class="info">
-                        <td class="info">{{type}}</td>
-                        <td class="info">{{brand}}</td>
-                        <td class="info">{{model}}</td>
-                        <td class="info">{{license}}</td>
-                        <td class="info">{{year}}</td>
-                        <td class="info">{{km}}</td>
-                    </tr>
-                    {{/each}}
-                </tbody>
-            </table>
-
-            <footer class="footer">
-                <p>&copy; 2017 My Garage</p>
-            </footer>
-
-        </div>
-
-</body>
-
-</html>
+</div>

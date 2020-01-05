@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,9 +10,51 @@
 </head>
 
 <body>
+  {{#if errors}} {{#each errors}}
+  <div class="alert alert-danger">{{msg}}</div>
+  {{/each}} {{/if}}
 
-  {{{body}}}
+  <div class="container">
+    <div class="header clearfix">
+      <nav>
+        <ul class="nav nav-pills pull-right">
+
+          {{#if user}}
+
+          <li role="presentation"><a href="/mygarage">My Cars</a></li>
+          <li role="presentation"><a href="/maintenance">Maintenance</a></li>
+          <li role="presentation"><a href="/addvehicle">Add Vehicle</a></li>
+          <li role="presentation"><a href="/addevent">Add Event</a></li>
+          <li role="presentation"><a href="/logout">Logout</a></li>
+
+          {{else}}
+
+          <!-- Login -->
+          <form class="form-inline" method="post" action="/mygarage">
+            <div class="form-group">
+              <label class="sr-only" for="exampleInputEmail3">Email</label>
+              <input type="text" class="form-control" id="exampleInputEmail3" placeholder="Email" name="Email">
+            </div>
+            <div class="form-group">
+              <label class="sr-only" for="exampleInputPassword3">Password</label>
+              <input type="password" class="form-control" id="exampleInputPassword3" placeholder="Password"
+                name="password">
+            </div>
+            <button type="submit" class="btn btn-default">Sign in</button>
+          </form>
+
+          {{/if}}
+
+        </ul>
+      </nav>
+      <h3 class="text-muted"><a href="/mygarage">My Garage</a></h3>
+    </div>
+
+    {{{body}}}
 
 </body>
+<footer class="footer">
+  <p>&copy; 2020 My Garage</p>
+</footer>
 
 </html>
