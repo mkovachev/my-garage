@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const Vehicle = require('../models/vehicle');
-const authGuard = require('../middleware/authGuard')
+const authGuard = require('../authGuard')
 
 
 // home

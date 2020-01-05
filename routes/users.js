@@ -2,27 +2,36 @@ const express = require('express')
 const router = express.Router()
 const User = require('../models/user')
 const Vehicle = require('../models/vehicle')
+const bcrypt = require('bcryptjs')
 
 
 // register user
 router.post('/', async (req, res) => {
-    const existingUser = User.findOne({ email: req.body.email })
+    const existingUser = await User.findOne({ email: req.body.email })
     if (existingUser) {
         req.flash('info', 'User with this email already exists!')
-        res.render('/')
+        //res.render('/')
     }
     try {
         const hashedPassword = await bcrypt.hash(req.body.password, 10)
-        const newUser = {
+        const newUser = new User({
             email: req.body.email,
             password: hashedPassword
-        }
-        await User.save(newUser)
+        })
+        await newUser.save()
         res.redirect('/')
-    } catch {
+    } catch (error) {
+        console.log(error)
         req.flash('info', 'Registration failed! Try again!')
-        res.render('/')
+        res.render('home')
     }
+})
+
+
+// logout
+router.get('/logout', async function (req, res) {
+    req.logout()
+    res.render('home')
 })
 
 // display user profile
@@ -69,23 +78,16 @@ router.put('/:id', async (req, res) => {
     }
 })
 
-// logout
-router.get('/logout', async function (req, res) {
-    res.render('home');
-});
-
+//delete
 router.delete('/:id', async (req, res) => {
     let user
     try {
         user = await User.findById(req.params.id)
         await user.remove()
-        res.redirect('/users')
+        res.redirect('/')
     } catch {
-        if (user == null) {
-            res.redirect('/')
-        } else {
-            res.redirect(`/users/${user.id}`)
-        }
+        req.flash('info', 'Failed to delete user. Try again')
+        res.render('/')
     }
 })
 

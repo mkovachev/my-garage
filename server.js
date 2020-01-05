@@ -25,6 +25,7 @@ const maintenance = require('./routes/maintenance')
 const users = require('./routes/users')
 const vehicles = require('./routes/vehicles')
 
+
 // set view engine
 app.engine('.hbs', exphbs({ extname: '.hbs' }));
 app.set('view engine', '.hbs');
@@ -36,6 +37,7 @@ app.use(bodyParser.urlencoded({ limit: '10mb', extended: false })) // req.body
 app.use(flash())
 
 app.use(session({
+  cookie: { maxAge: 60000 },
   secret: process.env.SESSION_SECRET,
   resave: false, // don't save if no changes
   saveUninitialized: false // don't save empty value in the session
@@ -54,7 +56,7 @@ mongoose.connect(process.env.DATABASE_URL,
   })
 const db = mongoose.connection
 db.on('error', error => console.error(error))
-db.once('open', () => console.log('Connected to Mongoose'))
+db.once('open', () => console.log('Connected to mongoDB'))
 
 app.use('/', home)
 app.use(['/', '/mygarage'], users)

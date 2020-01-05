@@ -4,7 +4,7 @@ const router = express.Router()
 const User = require('../models/user')
 const Event = require('../models/event')
 const Vehicle = require('../models/vehicle')
-const authGuard = require('../middleware/authGuard')
+const authGuard = require('../authGuard')
 
 // display event
 router.get('/addevent', authGuard.checkAuthenticated, function (req, res) {

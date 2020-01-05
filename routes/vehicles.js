@@ -3,7 +3,7 @@ const router = express.Router()
 const Vehicle = require('../models/vehicle')
 const User = require('../models/user')
 const imageMimeTypes = ['image/jpeg', 'image/png', 'images/gif']
-const authGuard = require('../middleware/authGuard')
+const authGuard = require('../authGuard')
 
 // All vehicles
 router.get('/', async (req, res) => {
