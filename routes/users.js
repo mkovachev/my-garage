@@ -40,7 +40,7 @@ router.post('/mygarage',
 router.get('/mygarage', authGuard.checkAuthenticated, async (req, res) => {
     try {
         const user = await User.findOne({ user: req.session.user })
-        const vehicles = await Vehicle.find({ "owner": id }).limit(12).exec()
+        const vehicles = await Vehicle.find({ user: user.id }).limit(12).exec()
         res.render('mygarage', {
             user: user,
             userVehicles: vehicles
