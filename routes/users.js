@@ -12,7 +12,6 @@ router.post('/', async (req, res) => {
     const existingUser = await User.findOne({ email: req.body.email })
     if (existingUser) {
         req.flash('info', 'User with this email already exists!')
-        //res.render('/')
     }
     try {
         const hashedPassword = await bcrypt.hash(req.body.password, 10)
@@ -21,10 +20,9 @@ router.post('/', async (req, res) => {
             password: hashedPassword
         })
         await newUser.save()
-        res.redirect('/')
     } catch {
         req.flash('info', 'Registration failed! Try again!')
-        res.redirect('/')
+        res.render('home')
     }
 })
 
@@ -42,7 +40,7 @@ router.post('/mygarage',
 router.get('/mygarage', authGuard.checkAuthenticated, async (req, res) => {
     try {
         const user = await User.findOne({ user: req.session.user })
-        const vehicles = await Vehicle.find({ user: user.id }).limit(12).exec()
+        const vehicles = await Vehicle.find({ "owner": id }).limit(12).exec()
         res.render('mygarage', {
             user: user,
             userVehicles: vehicles

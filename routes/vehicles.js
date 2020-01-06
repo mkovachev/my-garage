@@ -33,7 +33,7 @@ router.post('/addvehicle', authGuard.checkAuthenticated, async (req, res) => {
         res.redirect('/mygarage')
         req.flash('success', 'Vehicle successfully added')
     } catch {
-        res.redirect('/mygarage')
+        res.render('mygarage')
         req.flash('error', 'Failed to add vehicle')
     }
 })
