@@ -3,7 +3,7 @@ const router = express.Router()
 const Event = require('../models/event')
 const authGuard = require('../middleware/authGuard')
 
-router.get('/maintenance', authGuard.checkAuthenticated, async (req, res) => {
+router.get('/', authGuard.checkAuthenticated, async (req, res) => {
     const { id } = req.session.user._id;
     try {
         await Event.find({ "owner": id })

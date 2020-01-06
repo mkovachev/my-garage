@@ -4,12 +4,12 @@ const Vehicle = require('../models/vehicle')
 const authGuard = require('../middleware/authGuard')
 
 // display add vehicle
-router.get('/addvehicle', authGuard.checkAuthenticated, async (req, res) => {
+router.get('/', authGuard.checkAuthenticated, async (req, res) => {
     res.render('addvehicle')
 })
 
 // add vehicle
-router.post('/addvehicle', authGuard.checkAuthenticated, async (req, res) => {
+router.post('/', authGuard.checkAuthenticated, async (req, res) => {
 
     // input validation
     req.checkBody('type', 'type is required').notEmpty()

@@ -5,12 +5,12 @@ const Event = require('../models/event')
 const authGuard = require('../middleware/authGuard')
 
 // display event
-router.get('/addevent', authGuard.checkAuthenticated, async (req, res) => {
+router.get('/', authGuard.checkAuthenticated, async (req, res) => {
     res.render('addevent')
 })
 
 // add event
-router.post('/addevent', authGuard.checkAuthenticated, async (req, res) => {
+router.post('/', authGuard.checkAuthenticated, async (req, res) => {
 
     // input validation
     req.checkBody('title', 'title is required').notEmpty();
