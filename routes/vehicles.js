@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Vehicle = require('../models/vehicle')
 const authGuard = require('../middleware/authGuard')
+const User = require('../models/user')
 
 // display add vehicle
 router.get('/', authGuard.checkAuthenticated, async (req, res) => {
@@ -12,14 +13,17 @@ router.get('/', authGuard.checkAuthenticated, async (req, res) => {
 router.post('/', authGuard.checkAuthenticated, async (req, res) => {
 
     // input validation
-    req.checkBody('type', 'type is required').notEmpty()
-    req.checkBody('brand', 'brand is required').notEmpty()
-    req.checkBody('model', 'model is required').notEmpty()
-    req.checkBody('license', 'license is required').notEmpty()
-    req.checkBody('year', 'year of manufacture is required').notEmpty()
-    req.checkBody('km', 'km is required').notEmpty()
-
+    // req.checkBody('type', 'type is required').notEmpty()
+    // req.checkBody('brand', 'brand is required').notEmpty()
+    // req.checkBody('model', 'model is required').notEmpty()
+    // req.checkBody('license', 'license is required').notEmpty()
+    // req.checkBody('year', 'year of manufacture is required').notEmpty()
+    // req.checkBody('km', 'km is required').notEmpty()
+    //console.log(req.session)
     try {
+        email = req.session.passport.user
+        const user = await User.findOne({ email })
+        console.log(user)
         const newVehicle = new Vehicle({
             type: req.body.type,
             brand: req.body.brand,
@@ -27,12 +31,14 @@ router.post('/', authGuard.checkAuthenticated, async (req, res) => {
             license: req.body.license,
             year: req.body.year,
             km: req.body.km,
-            'owner': req.session.user._id
+            'owner': user.id
         })
+        console.log(newVehicle)
         await newVehicle.save()
         res.redirect('/mygarage')
         req.flash('success', 'Vehicle successfully added')
-    } catch {
+    } catch (error) {
+        console.log(error)
         res.render('mygarage')
         req.flash('error', 'Failed to add vehicle')
     }

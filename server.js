@@ -28,7 +28,7 @@ app.use(express.static('public'))
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: false })) // req.body
 
 app.use(session({
-  cookie: { maxAge: 60000 },
+  cookie: { maxAge: 360000 },
   secret: process.env.SESSION_SECRET,
   resave: false, // don't save if no changes
   saveUninitialized: false // don't save empty value in the session

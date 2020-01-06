@@ -13,10 +13,10 @@ router.get('/', authGuard.checkAuthenticated, async (req, res) => {
 router.post('/', authGuard.checkAuthenticated, async (req, res) => {
 
     // input validation
-    req.checkBody('title', 'title is required').notEmpty();
-    req.checkBody('description', 'description is required').notEmpty();
-    req.checkBody('license', 'license is required').notEmpty();
-    req.checkBody('cost', 'cost is required').notEmpty();
+    // req.checkBody('title', 'title is required').notEmpty();
+    // req.checkBody('description', 'description is required').notEmpty();
+    // req.checkBody('license', 'license is required').notEmpty();
+    // req.checkBody('cost', 'cost is required').notEmpty();
 
     try {
         const newEvent = new Event({
