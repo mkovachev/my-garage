@@ -29,6 +29,9 @@ router.post('/addvehicle', authGuard.checkAuthenticated, async (req, res) => {
             km: req.body.km,
             'owner': req.session.user._id
         })
+        await newVehicle.save()
+        res.redirect('/mygarage')
+        req.flash('success', 'Vehicle successfully added')
     } catch {
         res.redirect('/mygarage')
         req.flash('error', 'Failed to add vehicle')
