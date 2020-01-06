@@ -1,26 +1,28 @@
-<div class="row">
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th>Type</th>
-                <th>Brand</th>
-                <th>Model</th>
-                <th>License</th>
-                <th>Year</th>
-                <th>Km</th>
-            </tr>
-        </thead>
-        <tbody>
-            {{#each vehicles}}
-            <tr class="info">
-                <td class="info">{{type}}</td>
-                <td class="info">{{brand}}</td>
-                <td class="info">{{model}}</td>
-                <td class="info">{{license}}</td>
-                <td class="info">{{year}}</td>
-                <td class="info">{{km}}</td>
-            </tr>
-            {{/each}}
-        </tbody>
-    </table>
+<div class="container">
+    <div class="row">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Brand</th>
+                    <th>Model</th>
+                    <th>License</th>
+                    <th>Year</th>
+                    <th>Km</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each vehicles}}
+                <tr class="info">
+                    <td class="info">{{type}}</td>
+                    <td class="info">{{brand}}</td>
+                    <td class="info">{{model}}</td>
+                    <td class="info">{{license}}</td>
+                    <td class="info">{{year}}</td>
+                    <td class="info">{{km}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
 </div>
