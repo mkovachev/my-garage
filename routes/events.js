@@ -5,8 +5,8 @@ const Event = require('../models/event')
 const authGuard = require('../middleware/authGuard')
 
 // display event
-router.get('/addevent', async (req, res) => {
-    await res.render('addevent')
+router.get('/addevent', authGuard.checkAuthenticated, async (req, res) => {
+    res.render('addevent')
 })
 
 // add event
