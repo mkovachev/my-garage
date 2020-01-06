@@ -19,17 +19,21 @@ router.post('/', authGuard.checkAuthenticated, async (req, res) => {
     // req.checkBody('cost', 'cost is required').notEmpty();
 
     try {
+        email = req.session.passport.user
+        const user = await User.findOne({ email })
+
         const newEvent = new Event({
             title: req.body.title,
             description: req.body.description,
             license: req.body.license,
             cost: req.body.cost,
-            'owner': req.session.user._id
+            'owner': user.id
         })
         await newEvent.save()
         res.redirect('/mygarage')
         req.flash('success', 'Event successfully added!')
-    } catch {
+    } catch (error) {
+        console.log(error)
         res.redirect('/addevent')
         req.flash('error', 'Failed to create event')
     }

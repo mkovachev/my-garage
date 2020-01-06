@@ -38,7 +38,6 @@ router.post('/mygarage',
 // mygarage - all vehicles per user view
 router.get('/mygarage', authGuard.checkAuthenticated, async (req, res) => {
     try {
-        params = req.body
         email = req.session.passport.user
         const user = await User.findOne({ email })
         const vehicles = await Vehicle.find({ 'owner': user.id }).limit(12).exec()
