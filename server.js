@@ -50,15 +50,15 @@ const db = mongoose.connection
 db.on('error', error => console.error(error))
 db.once('open', () => console.log('Connected to mongoDB'))
 
-const events = require('./routes/events')
 const home = require('./routes/home')
-const maintenance = require('./routes/maintenance')
 const users = require('./routes/users')
 const vehicles = require('./routes/vehicles')
+const events = require('./routes/events')
+const maintenance = require('./routes/maintenance')
 app.use('/', home)
 app.use(['/', '/mygarage'], users)
-app.use('/addevent', events)
 app.use('/addvehicle', vehicles)
+app.use('/addevent', events)
 app.use('/maintenance', maintenance)
 
 app.set('port', process.env.PORT || 3000);
