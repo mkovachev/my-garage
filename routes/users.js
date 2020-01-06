@@ -49,13 +49,13 @@ router.get('/mygarage', authGuard.checkAuthenticated, async (req, res) => {
         })
     } catch {
         req.flash('info', 'Please login first')
-        res.redirect('/')
+        res.render('home')
     }
 })
 
 // logout
 router.get('/logout', async (req, res) => {
-    await req.logout()
+    req.logOut()
     req.session = null
     return res.redirect('/')
 })

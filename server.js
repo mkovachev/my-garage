@@ -19,11 +19,6 @@ initializePassport(
   id => users.find(user => user.id === id)
 )
 
-const events = require('./routes/events')
-const home = require('./routes/home')
-const maintenance = require('./routes/maintenance')
-const users = require('./routes/users')
-const vehicles = require('./routes/vehicles')
 
 // set view engine
 app.engine('.hbs', exphbs({ extname: '.hbs' }));
@@ -57,6 +52,11 @@ const db = mongoose.connection
 db.on('error', error => console.error(error))
 db.once('open', () => console.log('Connected to mongoDB'))
 
+const events = require('./routes/events')
+const home = require('./routes/home')
+const maintenance = require('./routes/maintenance')
+const users = require('./routes/users')
+const vehicles = require('./routes/vehicles')
 app.use('/', home)
 app.use(['/', '/mygarage'], users)
 app.use('/addevent', events)
