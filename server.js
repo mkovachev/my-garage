@@ -18,7 +18,11 @@ initializePassport(
   email => users.find(user => user.email === email),
   id => users.find(user => user.id === id)
 )
-
+const events = require('./routes/events')
+const home = require('./routes/home')
+const maintenance = require('./routes/maintenance')
+const users = require('./routes/users')
+const vehicles = require('./routes/vehicles')
 
 // set view engine
 app.engine('.hbs', exphbs({ extname: '.hbs' }));
@@ -29,7 +33,6 @@ app.use(express.static('public'))
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: false })) // req.body
 
 app.use(session({
-  //path: '/',
   cookie: { maxAge: 60000 },
   secret: process.env.SESSION_SECRET,
   resave: false, // don't save if no changes
@@ -52,11 +55,6 @@ const db = mongoose.connection
 db.on('error', error => console.error(error))
 db.once('open', () => console.log('Connected to mongoDB'))
 
-const events = require('./routes/events')
-const home = require('./routes/home')
-const maintenance = require('./routes/maintenance')
-const users = require('./routes/users')
-const vehicles = require('./routes/vehicles')
 app.use('/', home)
 app.use(['/', '/mygarage'], users)
 app.use('/addevent', events)
