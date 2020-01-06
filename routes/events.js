@@ -1,27 +1,16 @@
 
 const express = require('express')
 const router = express.Router()
-const User = require('../models/user')
 const Event = require('../models/event')
-const Vehicle = require('../models/vehicle')
-const authGuard = require('../authGuard')
+const authGuard = require('../middleware/authGuard')
 
 // display event
-router.get('/addevent', authGuard.checkAuthenticated, function (req, res) {
-    res.render('addevent', {
-        layout: false
-    });
-});
+router.get('/addevent', async (req, res) => {
+    await res.render('addevent')
+})
 
 // add event
-router.post('/addevent', authGuard.checkAuthenticated, function (req, res) {
-    const inputParams = req.body;
-    const title = req.body.title;
-    const description = req.body.description;
-    const license = req.body.license;
-    const cost = req.body.cost;
-
-    const user = req.session.user;
+router.post('/addevent', authGuard.checkAuthenticated, async (req, res) => {
 
     // input validation
     req.checkBody('title', 'title is required').notEmpty();
@@ -29,23 +18,20 @@ router.post('/addevent', authGuard.checkAuthenticated, function (req, res) {
     req.checkBody('license', 'license is required').notEmpty();
     req.checkBody('cost', 'cost is required').notEmpty();
 
-    const errors = req.validationErrors();
-    if (errors) {
-        res.render('addevent', {
-            errors: errors
-        });
-    } else {
+    try {
         const newEvent = new Event({
-            title,
-            description,
-            license,
-            cost,
-            'owner': user._id
-        });
-        Event.addEvent(newEvent);
-        req.flash('success_msg', 'Event successfully added!');
-        //vehicle.events.push(newEvent._id); // TODO
-        res.redirect('/maintenance');
+            title: req.body.title,
+            description: req.body.description,
+            license: req.body.license,
+            cost: req.body.cost,
+            'owner': req.session.user._id
+        })
+        await newEvent.save()
+        res.redirect('/mygarage')
+        req.flash('success', 'Event successfully added!')
+    } catch {
+        res.redirect('/addevent')
+        req.flash('error', 'Failed to create event')
     }
 })
 

@@ -22,10 +22,9 @@ router.post('/', async (req, res) => {
         })
         await newUser.save()
         res.redirect('/')
-    } catch (error) {
-        console.log(error)
+    } catch {
         req.flash('info', 'Registration failed! Try again!')
-        res.render('home')
+        res.redirect('/')
     }
 })
 
@@ -48,16 +47,17 @@ router.get('/mygarage', authGuard.checkAuthenticated, async (req, res) => {
             user: user,
             userVehicles: vehicles
         })
-    } catch (error) {
-        console.log(error)
+    } catch {
+        req.flash('info', 'Please login first')
         res.redirect('/')
     }
 })
 
 // logout
-router.get('/logout', async function (req, res) {
-    req.logout()
-    res.render('home')
+router.get('/logout', async (req, res) => {
+    await req.logout()
+    req.session = null
+    return res.redirect('/')
 })
 
 // display edit

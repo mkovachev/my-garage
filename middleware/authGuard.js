@@ -3,7 +3,6 @@ const authGuard = {
         if (req.isAuthenticated()) {
             return next()
         }
-        res.redirect('/login')
     },
 
     checkNotAuthenticated(req, res, next) {

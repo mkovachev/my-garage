@@ -1,34 +1,17 @@
-
 const express = require('express')
 const router = express.Router()
-const User = require('../models/user')
 const Event = require('../models/event')
-const Vehicle = require('../models/vehicle')
-const authGuard = require('../authGuard')
+const authGuard = require('../middleware/authGuard')
 
-// maintenance - all events
-router.get('/maintenance', authGuard.checkAuthenticated, function (req, res, next) {
-    const id = req.session.user._id;
-    Event.find({
-        "owner": id
-    }, function (err, events) {
-        if (err) {
-            res.render('maintenance', {
-                errors: err
-            });
-        } else {
-            res.render('maintenance', {
-                layout: false,
-                events: events,
-                helpers: {
-                    json: function (context) {
-                        return JSON.stringify(context);
-                    }
-                }
-            });
-            return;
-        }
-    })
+router.get('/maintenance', authGuard.checkAuthenticated, async (req, res) => {
+    const { id } = req.session.user._id;
+    try {
+        await Event.find({ "owner": id })
+        res.render('maintenance')
+    } catch {
+        res.redirect('/')
+        req.flash('error', 'Please login first')
+    }
 })
 
 module.exports = router

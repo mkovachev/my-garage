@@ -59,9 +59,9 @@ db.once('open', () => console.log('Connected to mongoDB'))
 
 app.use('/', home)
 app.use(['/', '/mygarage'], users)
-app.use('/events', events)
+app.use('/addevent', events)
+app.use('/addvehicle', vehicles)
 app.use('/maintenance', maintenance)
-app.use('/vehicles', vehicles)
 
 app.set('port', process.env.PORT || 3000);
 
