@@ -19,11 +19,10 @@ router.post('/', authGuard.checkAuthenticated, async (req, res) => {
     // req.checkBody('license', 'license is required').notEmpty()
     // req.checkBody('year', 'year of manufacture is required').notEmpty()
     // req.checkBody('km', 'km is required').notEmpty()
-    //console.log(req.session)
+
     try {
         email = req.session.passport.user
         const user = await User.findOne({ email })
-        console.log(user)
         const newVehicle = new Vehicle({
             type: req.body.type,
             brand: req.body.brand,
@@ -33,7 +32,6 @@ router.post('/', authGuard.checkAuthenticated, async (req, res) => {
             km: req.body.km,
             'owner': user.id
         })
-        console.log(newVehicle)
         await newVehicle.save()
         res.redirect('/mygarage')
         req.flash('success', 'Vehicle successfully added')

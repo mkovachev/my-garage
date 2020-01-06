@@ -28,7 +28,6 @@ router.post('/', async (req, res) => {
 
 //login
 router.post('/mygarage',
-    authGuard.checkNotAuthenticated,
     passport.authenticate('local', {
         successRedirect: '/mygarage',
         failureRedirect: '/',
@@ -39,13 +38,16 @@ router.post('/mygarage',
 // mygarage - all vehicles per user view
 router.get('/mygarage', authGuard.checkAuthenticated, async (req, res) => {
     try {
-        const user = await User.findOne({ user: req.session.user })
-        const vehicles = await Vehicle.find({ user: user.id }).limit(12).exec()
+        params = req.body
+        email = req.session.passport.user
+        const user = await User.findOne({ email })
+        const vehicles = await Vehicle.find({ 'owner': user.id }).limit(12).exec()
         res.render('mygarage', {
             user: user,
-            userVehicles: vehicles
+            vehicles: vehicles
         })
-    } catch {
+    } catch (error) {
+        console.log(error)
         req.flash('info', 'Please login first')
         res.render('home')
     }
