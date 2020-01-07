@@ -5,9 +5,8 @@ const User = require('../models/user')
 const authGuard = require('../middleware/authGuard')
 
 router.get('/', authGuard.checkAuthenticated, async (req, res) => {
-
     try {
-        email = req.session.passport.user
+        const email = req.session.passport.user
         const user = await User.findOne({ email })
         const events = await Event.find({ 'owner': user.id }).limit(12).exec()
         res.render('maintenance', {
@@ -15,7 +14,7 @@ router.get('/', authGuard.checkAuthenticated, async (req, res) => {
             events: events
         })
     } catch {
-        res.redirect('/')
+        res.render('home')
         req.flash('error', 'Please login first')
     }
 })

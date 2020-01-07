@@ -11,18 +11,10 @@ router.get('/', authGuard.checkAuthenticated, async (req, res) => {
 
 // add vehicle
 router.post('/', authGuard.checkAuthenticated, async (req, res) => {
-
-    // input validation
-    // req.checkBody('type', 'type is required').notEmpty()
-    // req.checkBody('brand', 'brand is required').notEmpty()
-    // req.checkBody('model', 'model is required').notEmpty()
-    // req.checkBody('license', 'license is required').notEmpty()
-    // req.checkBody('year', 'year of manufacture is required').notEmpty()
-    // req.checkBody('km', 'km is required').notEmpty()
-
     try {
-        email = req.session.passport.user
+        const email = req.session.passport.user
         const user = await User.findOne({ email })
+
         const newVehicle = new Vehicle({
             type: req.body.type,
             brand: req.body.brand,
@@ -33,32 +25,31 @@ router.post('/', authGuard.checkAuthenticated, async (req, res) => {
             'owner': user.id
         })
         await newVehicle.save()
-        res.redirect('/mygarage')
+        res.render('mygarage')
         req.flash('success', 'Vehicle successfully added')
-    } catch (error) {
-        console.log(error)
+    } catch {
         res.render('mygarage')
         req.flash('error', 'Failed to add vehicle')
     }
 })
 
-// Show vehicle 
-router.get('/:id', async (req, res) => {
+// vehicle details
+router.get('/:id/details', async (req, res) => {
     try {
         const vehicle = await Vehicle.findById(req.params.id)
             .populate('user')
             .exec()
-        res.render('vehicles/show', { vehicle: vehicle })
+        res.render('vehicles/details', { vehicle: vehicle })
     } catch {
         res.redirect('/')
     }
 })
 
-// Edit Vehicle 
+// edit Vehicle 
 router.get('/:id/edit', async (req, res) => {
     try {
         const vehicle = await Vehicle.findById(req.params.id)
-        renderEditPage(res, vehicle)
+        res.render('vehicles/edit', { vehicle: vehicle })
     } catch {
         res.redirect('/')
     }
@@ -69,20 +60,19 @@ router.put('/:id', async (req, res) => {
     let vehicle
 
     try {
-        vehicle = await Vehicle.findById(req.params.id)
-        vehicle.title = req.body.title
-        vehicle.author = req.body.author
-        vehicle.publishDate = new Date(req.body.publishDate)
-        vehicle.pageCount = req.body.pageCount
-        vehicle.description = req.body.description
-        if (req.body.cover != null && req.body.cover !== '') {
-            saveCover(vehicle, req.body.cover)
-        }
+        const vehicle = await Vehicle.findById(req.params.id)
+        const { type, brand, model, license, year, km } = req.body
+        vehicle.title = type;
+        vehicle.brand = brand;
+        vehicle.model = model;
+        vehicle.license = license;
+        vehicle.year = year;
+        vehicle.km = km;
         await vehicle.save()
-        res.redirect(`/books/${vehicle.id}`)
+        res.redirect(`/vehicles/details`)
     } catch {
         if (vehicle != null) {
-            renderEditPage(res, vehicle, true)
+            res.render('vehicles/edit', { vehicle: vehicle })
         } else {
             redirect('/')
         }
@@ -93,12 +83,12 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
     let vehicle
     try {
-        vehicle = await Vehicle.findById(req.params.id)
+        const vehicle = await Vehicle.findById(req.params.id)
         await vehicle.remove()
         res.redirect('/vehicles')
     } catch {
-        if (vehicle != null) {
-            res.render('vehicles/show', {
+        if (vehicle !== null) {
+            res.render('vehicles/details', {
                 vehicle: vehicle,
                 errorMessage: 'Could not remove vehicle'
             })
