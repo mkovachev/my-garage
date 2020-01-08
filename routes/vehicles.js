@@ -61,13 +61,8 @@ router.put('/:id', async (req, res) => {
 
     try {
         const vehicle = await Vehicle.findById(req.params.id)
-        const { type, brand, model, license, year, km } = req.body
-        vehicle.title = type;
-        vehicle.brand = brand;
-        vehicle.model = model;
-        vehicle.license = license;
-        vehicle.year = year;
-        vehicle.km = km;
+        //vehicle = { type, brand, model, license, year, km } = req.body
+        vehicle = { ...req.body }
         await vehicle.save()
         res.redirect(`/vehicles/details`)
     } catch {
