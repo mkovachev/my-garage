@@ -55,7 +55,7 @@ router.get('/:id/edit', async (req, res) => {
     }
 })
 
-// Update vehicle 
+// update vehicle 
 router.put('/:id', async (req, res) => {
     let vehicle
 
